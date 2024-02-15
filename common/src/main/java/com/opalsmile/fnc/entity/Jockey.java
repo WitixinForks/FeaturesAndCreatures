@@ -432,7 +432,7 @@ public class Jockey extends PathfinderMob implements Npc, Merchant, GeoEntity, R
             if(this.uuid.equals(uuid)) {
                 savedData.setSpawnPosition(this.blockPosition());
                 savedData.setDirty();
-                //TODO sync dimension too NetworkHandler.sendToAllClients(((ServerWorld) this.level).players(), new JockeyPosPacket(this.blockPosition()));
+                FnCServices.NETWORK.broadcastJockeySpawning((ServerLevel) this.level(), this.blockPosition());
                 this.lastBlockPos = this.blockPosition();
             }
         }
