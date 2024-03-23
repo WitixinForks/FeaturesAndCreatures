@@ -369,6 +369,9 @@ public class Jockey extends PathfinderMob implements Npc, Merchant, GeoEntity, R
                 }
                 this.discard();
             }
+            if (this.getTradingPlayer() != null) {
+                this.navigation.stop();
+            }
         }
     }
 
