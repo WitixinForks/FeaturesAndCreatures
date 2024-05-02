@@ -21,9 +21,7 @@ public class FnCClient {
 
     public static final KeyMapping ANTLER_KEYBIND = new KeyMapping("key.featuresandcreatures.antler_headdress", InputConstants.Type.KEYSYM,
             GLFW.GLFW_KEY_RIGHT_SHIFT, "key.categories.gameplay");
-    private static final ResourceLocation JUMP_BAR_BACKGROUND_SPRITE = new ResourceLocation("hud/jump_bar_background");
-    private static final ResourceLocation JUMP_BAR_COOLDOWN_SPRITE = new ResourceLocation("hud/jump_bar_cooldown");
-    private static final ResourceLocation JUMP_BAR_PROGRESS_SPRITE = new ResourceLocation("hud/jump_bar_progress");
+    private static final ResourceLocation GUI_ICONS_LOCATION = new ResourceLocation("textures/gui/icons.png");
 
     public static float dashScale = 0;
     private static boolean sameLevel = false;
@@ -61,11 +59,11 @@ public class FnCClient {
         int j = (int)(dashScale * 183.0F);
         if (j < 2) return false;
         int k = screenHeight - 29;
-        graphics.blitSprite(JUMP_BAR_BACKGROUND_SPRITE, position, k, 182, 5);
+        graphics.blit(GUI_ICONS_LOCATION, position, k, 0, 84, 182, 5);
         if (Minecraft.getInstance().player.getCooldowns().isOnCooldown(item.getItem())) {
-            graphics.blitSprite(JUMP_BAR_COOLDOWN_SPRITE, position, k, 182, 5);
+            graphics.blit(GUI_ICONS_LOCATION, position, k, 0, 74, 182, 5);
         } else {
-            graphics.blitSprite(JUMP_BAR_PROGRESS_SPRITE, 182, 5, 0, 0, position, k, j, 5);
+            graphics.blit(GUI_ICONS_LOCATION, position, k, 0, 89, j, 5);
         }
         return true;
     }

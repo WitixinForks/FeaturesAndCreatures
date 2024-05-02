@@ -26,20 +26,28 @@ public class FnCFabricNetworkHelper implements FnCINetworkHelper {
 
     @Override
     public void notifyPlayerOfJockey(ServerPlayer player, BlockPos jockeyPosition){
-        ServerPlayNetworking.send(player, JOCKEY_PACKET, PacketByteBufs.create().writeBoolean(true).writeBlockPos(jockeyPosition));
+        FriendlyByteBuf friendlyByteBuf = PacketByteBufs.create();
+        friendlyByteBuf.writeBoolean(true);
+        friendlyByteBuf.writeBlockPos(jockeyPosition);
+        ServerPlayNetworking.send(player, JOCKEY_PACKET, friendlyByteBuf);
     }
 
     @Override
     public void broadcastJockeySpawning(ServerLevel level, BlockPos position){
         for (ServerPlayer player : level.getPlayers(player -> true)) {
-            ServerPlayNetworking.send(player, JOCKEY_PACKET, PacketByteBufs.create().writeBoolean(true).writeBlockPos(position));
+            FriendlyByteBuf friendlyByteBuf = PacketByteBufs.create();
+            friendlyByteBuf.writeBoolean(true);
+            friendlyByteBuf.writeBlockPos(position);
+            ServerPlayNetworking.send(player, JOCKEY_PACKET, friendlyByteBuf);
         }
     }
 
     @Override
     public void notifyJockeyDeath(ServerLevel level) {
         for (ServerPlayer player : level.getPlayers(player -> true)) {
-            ServerPlayNetworking.send(player, JOCKEY_PACKET, PacketByteBufs.create().writeBoolean(false));
+            FriendlyByteBuf friendlyByteBuf = PacketByteBufs.create();
+            friendlyByteBuf.writeBoolean(false);
+            ServerPlayNetworking.send(player, JOCKEY_PACKET, friendlyByteBuf);
         }
     }
 

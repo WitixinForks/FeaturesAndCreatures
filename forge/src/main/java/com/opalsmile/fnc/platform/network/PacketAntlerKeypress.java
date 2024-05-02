@@ -2,7 +2,9 @@ package com.opalsmile.fnc.platform.network;
 
 import com.opalsmile.fnc.util.AntlerHandler;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.event.network.CustomPayloadEvent;
+import net.minecraftforge.network.NetworkEvent;
+
+import java.util.function.Supplier;
 
 public class PacketAntlerKeypress {
 
@@ -20,11 +22,11 @@ public class PacketAntlerKeypress {
         buf.writeBoolean(this.release);
     }
 
-    public void handle(CustomPayloadEvent.Context context) {
-        context.enqueueWork(() -> {
-            if (context.getSender() == null) return;
-            AntlerHandler.handlePacket(context.getSender(), this.release);
+    public void handle(Supplier<NetworkEvent.Context> context) {
+        context.get().enqueueWork(() -> {
+            if (context.get().getSender() == null) return;
+            AntlerHandler.handlePacket(context.get().getSender(), this.release);
         });
-        context.setPacketHandled(true);
+        context.get().setPacketHandled(true);
     }
 }

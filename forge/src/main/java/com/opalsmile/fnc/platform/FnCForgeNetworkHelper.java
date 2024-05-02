@@ -9,38 +9,41 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.*;
+import net.minecraftforge.network.simple.SimpleChannel;
 
 public class FnCForgeNetworkHelper implements FnCINetworkHelper {
 
-    private static final SimpleChannel INSTANCE = ChannelBuilder.named(FnCConstants.resourceLocation("packets"))
-            .networkProtocolVersion(1)
-            .clientAcceptedVersions((status, version) -> version == 1)
-            .serverAcceptedVersions((status, version) -> version == 1)
-            .simpleChannel();
+    private static final String PROTOCOL_VERSION = "1";
+
+    private static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
+            FnCConstants.resourceLocation("packets"),
+            () -> PROTOCOL_VERSION,
+            PROTOCOL_VERSION::equals,
+            PROTOCOL_VERSION::equals);
 
     @Override
     public void sendAntlerKeypress(boolean release){
-        INSTANCE.send(new PacketAntlerKeypress(release), PacketDistributor.SERVER.noArg());
+        INSTANCE.send(PacketDistributor.SERVER.noArg(), new PacketAntlerKeypress(release));
     }
 
     @Override
     public void notifyPlayerOfJockey(ServerPlayer player, BlockPos jockeyPosition){
         JockeySavedData savedData = JockeySavedData.get(player.server);
-        INSTANCE.send(new PacketJockeyInformation(savedData.hasJockeySpawned() && savedData.getDimensionId().equals(player.level().dimension().location()),
-                        jockeyPosition),
-                PacketDistributor.PLAYER.with(player));
+        INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new PacketJockeyInformation(savedData.hasJockeySpawned() && savedData.getDimensionId().equals(player.level().dimension().location()),
+                        jockeyPosition)
+                );
     }
 
     @Override
     public void broadcastJockeySpawning(ServerLevel level, BlockPos position){
         PacketJockeyInformation packet = new PacketJockeyInformation(true, position);
-        INSTANCE.send(packet, PacketDistributor.DIMENSION.with(level.dimension()));
+        INSTANCE.send(PacketDistributor.DIMENSION.with(level::dimension), packet);
     }
 
     @Override
     public void notifyJockeyDeath(ServerLevel level){
         PacketJockeyInformation packet = new PacketJockeyInformation(false, null);
-        INSTANCE.send(packet, PacketDistributor.DIMENSION.with(level.dimension()));
+        INSTANCE.send(PacketDistributor.DIMENSION.with(level::dimension), packet);
     }
 
     public static void register() {

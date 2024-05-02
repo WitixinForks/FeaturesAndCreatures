@@ -10,7 +10,7 @@ public class FnCTriggers {
     public static final JockeyTradeTrigger JOCKEY_TRADE = new JockeyTradeTrigger();
 
     public static void register(){
-        CriteriaTriggers.register(FnCConstants.resourceLocation("used_headdress").toString(), ANTLER_HEADDRESS);
-        CriteriaTriggers.register(FnCConstants.resourceLocation("jockey_trade").toString(), JOCKEY_TRADE);
+        CriteriaTriggers.register(ANTLER_HEADDRESS);
+        CriteriaTriggers.register(JOCKEY_TRADE);
     }
 }

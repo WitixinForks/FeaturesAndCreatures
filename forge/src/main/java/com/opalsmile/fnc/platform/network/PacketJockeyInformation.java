@@ -3,8 +3,10 @@ package com.opalsmile.fnc.platform.network;
 import com.opalsmile.fnc.client.FnCClient;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.event.network.CustomPayloadEvent;
+import net.minecraftforge.network.NetworkEvent;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.function.Supplier;
 
 public class PacketJockeyInformation {
     private final boolean sameLevel;
@@ -28,11 +30,11 @@ public class PacketJockeyInformation {
         }
     }
 
-    public void handle(CustomPayloadEvent.Context context) {
-        context.enqueueWork(() -> {
+    public void handle(Supplier<NetworkEvent.Context> context) {
+        context.get().enqueueWork(() -> {
             FnCClient.setSameJockeyLevel(this.sameLevel);
             if (this.sameLevel) FnCClient.setJockeyPosition(this.position);
         });
-        context.setPacketHandled(true);
+        context.get().setPacketHandled(true);
     }
 }

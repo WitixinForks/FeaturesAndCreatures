@@ -4,7 +4,7 @@ plugins {
     id 'java'
     id 'maven-publish'
     id 'org.spongepowered.gradle.vanilla'
-    id 'com.matyrobbrt.mc.registrationutils' version '1.20-1.1.0'
+    id 'com.matyrobbrt.mc.registrationutils' version '1.20.1-1.0.1'
 }
 registrationUtils {
     group 'opalsmile.fnc.reg'

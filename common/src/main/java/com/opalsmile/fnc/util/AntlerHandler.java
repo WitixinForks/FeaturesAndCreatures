@@ -75,7 +75,8 @@ public class AntlerHandler {
         player.setDeltaMovement(player.getDeltaMovement().add(xForwards, 0.0, zForwards));
         if (chargeTime > 0.1) {
             float knockback = MAX_KNOCKBACK * chargePercentage;
-            AABB targetBoundingBox = player.getBoundingBox().expandTowards(xForwards, 0, zForwards);
+            //TODO Rewrite this, maybe switch to checking collision, ideally raytrace on delay or something.
+            AABB targetBoundingBox = player.getBoundingBox().inflate(xForwards, 0, zForwards);
             level.getEntities(EntityTypeTest.forClass(Entity.class), targetBoundingBox, entity -> entity.isAlive() && entity != player).forEach(entity -> {
                 FnCTriggers.ANTLER_HEADDRESS.trigger(player, player.getItemBySlot(EquipmentSlot.HEAD));
                 entity.move(MoverType.PLAYER, new Vec3(knockback * vec.x, 2.0, knockback * vec.z));

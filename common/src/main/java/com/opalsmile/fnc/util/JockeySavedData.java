@@ -25,7 +25,7 @@ public class JockeySavedData extends SavedData {
 
     public static JockeySavedData get(MinecraftServer server){
         return server.overworld().getDataStorage().computeIfAbsent(
-                new SavedData.Factory<>(JockeySavedData::new, JockeySavedData::load, DataFixTypes.SAVED_DATA_MAP_DATA), FnCConstants.MOD_ID);
+                 JockeySavedData::load, JockeySavedData::new, FnCConstants.MOD_ID);
     }
 
     public static JockeySavedData load(final CompoundTag tag){
