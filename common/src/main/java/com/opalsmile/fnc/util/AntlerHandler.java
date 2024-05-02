@@ -68,19 +68,22 @@ public class AntlerHandler {
         ServerLevel level = player.serverLevel();
         float chargePercentage = chargeTime * chargeTime;
         float forwards = MAX_CHARGE * chargePercentage;
-        float knockback = MAX_KNOCKBACK * chargePercentage;
         Vec3 vec = player.getLookAngle();
-        double xForwards = vec.x * forwards + 1 * vec.x;
-        double zForwards = vec.z * forwards + 1 * vec.z;
+        double xForwards = vec.x * forwards + vec.x;
+        double zForwards = vec.z * forwards + vec.z;
         playSound(chargePercentage, player);
         player.setDeltaMovement(player.getDeltaMovement().add(xForwards, 0.0, zForwards));
-        AABB targetBoundingBox = player.getBoundingBox().expandTowards(xForwards, 0, zForwards);
-        level.getEntities(EntityTypeTest.forClass(Entity.class), targetBoundingBox, entity -> entity.isAlive() && entity != player).forEach(entity -> {
-            FnCTriggers.ANTLER_HEADDRESS.trigger(player, player.getItemBySlot(EquipmentSlot.HEAD));
-            entity.move(MoverType.PLAYER, new Vec3(knockback * vec.x, 2.0, knockback * vec.z));
-            entity.hurt(level.damageSources().mobAttack(player), MAX_DAMAGE * chargePercentage);
-            level.playSound(null, entity.getX(), entity.getY(), entity.getZ(), FnCSounds.ANTLER_HEADDRESS_ATTACK_STRONG.get(), SoundSource.PLAYERS, 1.0f, 1.0f);
-        });
+        if (chargeTime > 0.1) {
+            float knockback = MAX_KNOCKBACK * chargePercentage;
+            AABB targetBoundingBox = player.getBoundingBox().expandTowards(xForwards, 0, zForwards);
+            level.getEntities(EntityTypeTest.forClass(Entity.class), targetBoundingBox, entity -> entity.isAlive() && entity != player).forEach(entity -> {
+                FnCTriggers.ANTLER_HEADDRESS.trigger(player, player.getItemBySlot(EquipmentSlot.HEAD));
+                entity.move(MoverType.PLAYER, new Vec3(knockback * vec.x, 2.0, knockback * vec.z));
+                entity.hurt(level.damageSources().mobAttack(player), MAX_DAMAGE * chargePercentage);
+                level.playSound(null, entity.getX(), entity.getY(), entity.getZ(), FnCSounds.ANTLER_HEADDRESS_ATTACK_STRONG.get(), SoundSource.PLAYERS, 1.0f, 1.0f);
+            });
+        }
+        //Syncronise player movement
         player.hurtMarked = true;
     }
 
