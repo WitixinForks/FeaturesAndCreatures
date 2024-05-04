@@ -13,4 +13,5 @@ public class FnCConstants {
     public static ResourceLocation resourceLocation(final String path){
         return new ResourceLocation(MOD_ID, path);
     }
+
 }

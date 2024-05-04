@@ -1,7 +1,10 @@
 package com.opalsmile.fnc.item;
 
+import com.opalsmile.fnc.FnCConstants;
 import com.opalsmile.fnc.entity.Spear;
 import com.opalsmile.fnc.registries.FnCSounds;
+import com.opalsmile.fnc.util.FnCUtil;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -19,9 +22,12 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.network.SerializableDataTicket;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.Map;
@@ -32,11 +38,20 @@ public abstract class SpearItem extends Item implements Vanishable, GeoItem {
 
     public SpearItem(Properties itemProperties){
         super(itemProperties);
+        SingletonGeoAnimatable.registerSyncedAnimatable(this);
     }
 
     @Override
     public int getUseDuration(ItemStack stack) {
         return 72000;
+    }
+
+    @Override
+    public void onUseTick(Level level, LivingEntity livingEntity, ItemStack itemStack, int remainingTicks){
+        if (!level.isClientSide()) {
+            this.setAnimData(livingEntity, GeoItem.getOrAssignId(itemStack, (ServerLevel) level), FnCUtil.SPEAR_USE, true);
+        }
+
     }
 
     @Override
@@ -51,6 +66,7 @@ public abstract class SpearItem extends Item implements Vanishable, GeoItem {
     @Override
     public void releaseUsing(ItemStack stack, Level level, LivingEntity livingEntity, int timeLeft){
         if (!livingEntity.level().isClientSide && livingEntity instanceof Player player) {
+            this.setAnimData(livingEntity, GeoItem.getOrAssignId(stack, (ServerLevel) level), FnCUtil.SPEAR_USE, false);
             int i = this.getUseDuration(stack) - timeLeft;
             if (i >= 10) {
                 stack.hurtAndBreak(1, player, (playerEntity) -> {
@@ -84,7 +100,6 @@ public abstract class SpearItem extends Item implements Vanishable, GeoItem {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers){
-
     }
 
     @Override
