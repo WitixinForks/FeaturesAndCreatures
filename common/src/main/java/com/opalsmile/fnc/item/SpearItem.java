@@ -52,7 +52,7 @@ public abstract class SpearItem extends Item implements Vanishable, GeoItem {
                     playerEntity.broadcastBreakEvent(player.getUsedItemHand());
                 });
                 Spear spear = new Spear(level, player, stack);
-                spear.shootFromRotation(player, player.getXRot(), player.getYRot(), 0, 3.5f, 1.0F);
+                spear.shootFromRotation(player, player.getXRot(), player.getYRot(), 0, 2.5f, 1.0F);
                 if(player.getAbilities().instabuild) {
                     spear.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
                 }
