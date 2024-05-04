@@ -13,7 +13,6 @@ import net.minecraft.world.entity.HumanoidArm;
 
 public class DowsingRodHandRenderer {
 
-    public static final ModelResourceLocation SPEAR_MODEL = new ModelResourceLocation(FnCConstants.MOD_ID, "spear", "inventory");
     public static final ModelResourceLocation SPEAR_IN_HAND_MODEL = new ModelResourceLocation(FnCConstants.MOD_ID, "spear_in_hand", "inventory");
 
     private static void renderHand(AbstractClientPlayer player, PoseStack stack, MultiBufferSource source, int packedLight, HumanoidArm arm) {

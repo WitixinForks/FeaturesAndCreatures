@@ -10,7 +10,6 @@
   "client": [
       "client.MixinRenderAntlerBar",
       "client.MixinDowsingRod",
-      "client.spear.MixinSpearInHand",
       "client.spear.MixinSpearRendering"
   ],
   "server": [
