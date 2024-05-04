@@ -44,7 +44,7 @@ public class DowsingRodHandRenderer {
 
         float rotation = Mth.sin(attackAnimSqrt * (float) Math.PI);
         poseStack.mulPose(Axis.XP.rotationDegrees(rotation * 20.0F));
-        poseStack.scale(2.0F, 2.0F, 2.0F);
-        poseStack.translate(-0.575, 0.3, 0.0);
+        poseStack.scale(0.75f, 0.75f, 0.75f);
+        poseStack.translate(-0.575, 0.4, 1.05);
     }
 }
