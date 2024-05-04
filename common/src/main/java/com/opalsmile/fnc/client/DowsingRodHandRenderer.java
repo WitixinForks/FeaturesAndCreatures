@@ -2,14 +2,19 @@ package com.opalsmile.fnc.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import com.opalsmile.fnc.FnCConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
 
 public class DowsingRodHandRenderer {
+
+    public static final ModelResourceLocation SPEAR_MODEL = new ModelResourceLocation(FnCConstants.MOD_ID, "spear", "inventory");
+    public static final ModelResourceLocation SPEAR_IN_HAND_MODEL = new ModelResourceLocation(FnCConstants.MOD_ID, "spear_in_hand", "inventory");
 
     private static void renderHand(AbstractClientPlayer player, PoseStack stack, MultiBufferSource source, int packedLight, HumanoidArm arm) {
         PlayerRenderer playerRenderer = (PlayerRenderer) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
