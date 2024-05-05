@@ -1,180 +1,90 @@
 package com.opalsmile.fnc.entity;
 
-import com.opalsmile.fnc.registries.FnCSounds;
+import com.opalsmile.fnc.entity.goals.NeutralMeleeAttackGoal;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.util.TimeUtil;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.NeutralMob;
+import net.minecraft.world.entity.ai.goal.BreedGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.util.GeckoLibUtil;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
+import java.util.UUID;
 
-public abstract class RideableNeutralMob extends Animal implements GeoEntity {
+public abstract class RideableNeutralMob extends RideableMob implements NeutralMob {
 
-    private static final EntityDataAccessor<Boolean> SADDLED = SynchedEntityData.defineId(RideableNeutralMob.class, EntityDataSerializers.BOOLEAN);
-
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-
+    private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 30);
+    private int remainingPersistentAngerTime;
+    @javax.annotation.Nullable
+    private UUID persistentAngerTarget;
+    private boolean isAttacking = false;
 
     public RideableNeutralMob(EntityType<? extends Animal> entityType, Level level){
         super(entityType, level);
     }
 
-    protected void registerGoals() {
-        this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(7, new TemptGoal(this, 1.2D, Ingredient.of(this.getFoodTag()), false));
-        this.goalSelector.addGoal(5, new FollowParentGoal(this, 1.1));
-        this.goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 6.0F));
-        this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
+    @Override
+    protected void registerGoals(){
+        super.registerGoals();
+        this.goalSelector.addGoal(2, new NeutralMeleeAttackGoal(this, 1.5, true));
+        this.goalSelector.addGoal(6, new BreedGoal(this, 1.0));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
+        this.targetSelector.addGoal(5, new ResetUniversalAngerTargetGoal<>(this, false));
+        this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag compoundNBT){
-        super.readAdditionalSaveData(compoundNBT);
-        this.setSaddled(compoundNBT.getBoolean("Saddled"));
+    public void readAdditionalSaveData(CompoundTag compoundTag) {
+        super.readAdditionalSaveData(compoundTag);
+        this.readPersistentAngerSaveData(this.level(), compoundTag);
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag compoundNBT){
-        super.addAdditionalSaveData(compoundNBT);
-        compoundNBT.putBoolean("Saddled", this.isSaddled());
+    public void addAdditionalSaveData(CompoundTag compoundTag) {
+        super.addAdditionalSaveData(compoundTag);
+        this.addPersistentAngerSaveData(compoundTag);
     }
 
     @Override
-    public void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(SADDLED, false);
-    }
-
-    public boolean isSaddled(){
-        return this.entityData.get(SADDLED);
-    }
-
-    public void setSaddled(boolean saddled){
-        this.entityData.set(SADDLED, saddled);
+    public int getRemainingPersistentAngerTime() {
+        return remainingPersistentAngerTime;
     }
 
     @Override
-    public InteractionResult mobInteract(Player player, InteractionHand hand){
-        if (this.isFood(player.getItemInHand(hand)) || !this.isPlayerRideable()) {
-            return super.mobInteract(player, hand);
-        }
-        boolean isServerSide = !player.level().isClientSide();
-        if (this.isSaddled()) {
-            if(player.isSecondaryUseActive()) {
-                if (isServerSide) {
-                    this.setSaddled(false);
-                    this.spawnAtLocation(Items.SADDLE);
-                    player.level().playSound(null, this.getX(), this.getY() + 0.33f, this.getZ(), FnCSounds.ENTITY_DESADDLE.get(), SoundSource.NEUTRAL, 1, 1);
-                }
-                return InteractionResult.sidedSuccess(isServerSide);
-            }
-            else {
-                //Check if not occupied and ride
-                if (this.getControllingPassenger() == null) {
-                    if (isServerSide) player.startRiding(this);
-                    return InteractionResult.sidedSuccess(isServerSide);
-                }
-            }
-        }
-        else {
-            if(player.getItemInHand(hand).is(Items.SADDLE)) {
-                if (isServerSide) {
-                    player.level().playSound(null, this, this.getSaddleSound(), SoundSource.NEUTRAL, 1, 1);
-                    this.setSaddled(true);
-                    if(!player.getAbilities().instabuild) {
-                        player.getItemInHand(hand).shrink(1);
-                    }
-                }
-                return InteractionResult.sidedSuccess(player.level().isClientSide());
-            }
-        }
-        return super.mobInteract(player, hand);
-    }
-
-
-    @Nullable
-    @Override
-    public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob entity){
-        return (AgeableMob) this.getType().create(level);
-    }
-
-    @Override
-    public boolean isFood(ItemStack stack) {
-        return stack.is(this.getFoodTag());
-    }
-
-    @Override
-    protected void dropEquipment(){
-        if(this.isSaddled()) this.spawnAtLocation(Items.SADDLE);
-    }
-
-    @Override
-    protected void tickRidden(Player player, Vec3 movement){
-        this.setRot(player.getYRot(), player.getXRot() * 0.5F);
-        this.yRotO = this.yBodyRot = this.yHeadRot = this.getYRot();
-    }
-
-    @Override
-    protected Vec3 getRiddenInput(Player player, Vec3 input){
-        float horizontal = player.xxa * 0.5F;
-        float forwards = player.zza;
-        if (forwards <= 0.0F) {
-            //Make movement slow if we're backtracking
-            forwards *= 0.25F;
-        }
-        //By default this won't jump.
-        return new Vec3(horizontal, 0.0D, forwards);
-    }
-
-    @Override
-    protected float getRiddenSpeed(Player player){
-        return (float) this.getAttributeValue(Attributes.MOVEMENT_SPEED);
+    public void setRemainingPersistentAngerTime(int i) {
+        this.remainingPersistentAngerTime = i;
     }
 
     @Nullable
     @Override
-    public LivingEntity getControllingPassenger() {
-        if (this.isSaddled()) {
-            Entity entity = this.getFirstPassenger();
-            if (entity instanceof Player player) {
-                return player;
-            }
-        }
-        return null;
+    public UUID getPersistentAngerTarget() {
+        return this.persistentAngerTarget;
     }
-
-    abstract TagKey<Item> getFoodTag();
-
-    abstract SoundEvent getSaddleSound();
-
-    abstract boolean isPlayerRideable();
 
     @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache(){
-        return cache;
+    public void setPersistentAngerTarget(@Nullable UUID uuid) {
+        this.persistentAngerTarget = uuid;
     }
+
+    @Override
+    public void startPersistentAngerTimer() {
+        this.setRemainingPersistentAngerTime(PERSISTENT_ANGER_TIME.sample(this.random));
+    }
+
+    public boolean isAttacking() {
+        return isAttacking;
+    }
+
+    public void setAttacking(boolean value) {
+        isAttacking = value;
+    }
+
+    abstract int getTimeToAttack();
 }

@@ -20,7 +20,6 @@ public abstract class AntlerHeaddress extends ArmorItem implements GeoItem {
         super(material, type, itemProperties);
     }
 
-
     //No attributes, no armor
     @Override
     public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot equipmentSlot){

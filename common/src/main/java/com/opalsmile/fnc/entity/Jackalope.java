@@ -26,7 +26,7 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 
 
-public class Jackalope extends RideableNeutralMob {
+public class Jackalope extends RideableMob {
     public static final TagKey<Item> JACKALOPE_FOOD = TagKey.create(Registries.ITEM, FnCConstants.resourceLocation("jackalope_food"));
     public static final RawAnimation WALK = RawAnimation.begin().thenLoop("animation.jackalope.walk");
 

@@ -23,46 +23,28 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.Animation;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 
 import java.util.UUID;
 
-public class Sabertooth extends RideableNeutralMob implements NeutralMob {
+public class Sabertooth extends RideableNeutralMob {
 
-    private static final RawAnimation WALK = RawAnimation.begin().thenPlay("animation.sabertooth.walk");
-    private static final RawAnimation ATTACK = RawAnimation.begin().thenLoop("animation.sabertooth.attack");
-    private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 30);
-    private int remainingPersistentAngerTime;
-    @javax.annotation.Nullable
-    private UUID persistentAngerTarget;
+    private static final RawAnimation WALK = RawAnimation.begin().thenLoop("animation.sabertooth.walk");
+    private static final RawAnimation ATTACK = RawAnimation.begin().then("animation.sabertooth.attack", Animation.LoopType.PLAY_ONCE);
 
-    public Sabertooth(EntityType<? extends RideableNeutralMob> entityType, Level level){
+    public Sabertooth(EntityType<? extends RideableMob> entityType, Level level){
         super(entityType, level);
     }
 
     @Override
     protected void registerGoals(){
         super.registerGoals();
-        this.goalSelector.addGoal(6, new BreedGoal(this, 1.0));
-        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.25, true));
         this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Fox.class, 10, true, true, fox -> ((Fox)fox).getVariant() == Fox.Type.SNOW));
         this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Sheep.class, 10, true, true, null));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::isAngryAt));
-        this.targetSelector.addGoal(5, new ResetUniversalAngerTargetGoal<>(this, false));
-        this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
     }
-
-
-    @Override
-    public void tick(){
-        super.tick();
-        if (!this.level().isClientSide) {
-            this.updatePersistentAnger((ServerLevel)this.level(), true);
-        }
-    }
-
 
     @Override
     TagKey<Item> getFoodTag(){
@@ -72,6 +54,11 @@ public class Sabertooth extends RideableNeutralMob implements NeutralMob {
     @Override
     SoundEvent getSaddleSound(){
         return SoundEvents.HORSE_SADDLE;
+    }
+
+    @Override
+    int getTimeToAttack(){
+        return 4;
     }
 
     @Override
@@ -85,55 +72,11 @@ public class Sabertooth extends RideableNeutralMob implements NeutralMob {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar){
-        controllerRegistrar.add(new AnimationController<>(this, 20, state -> {
+        controllerRegistrar.add(new AnimationController<>(this, "controller",20, state -> {
             if(state.isMoving()) {
-                state.setAnimation(WALK);
-                return PlayState.CONTINUE;
-            }
-            Sabertooth sabertooth = state.getAnimatable();
-            if(sabertooth.swinging) {
-                state.setAnimation(ATTACK);
-                return PlayState.CONTINUE;
+                return state.setAndContinue(WALK);
             }
             return PlayState.STOP;
-        }));
-    }
-
-    @Override
-    public void readAdditionalSaveData(CompoundTag compoundTag) {
-        super.readAdditionalSaveData(compoundTag);
-        this.readPersistentAngerSaveData(this.level(), compoundTag);
-    }
-
-    @Override
-    public void addAdditionalSaveData(CompoundTag compoundTag) {
-        super.addAdditionalSaveData(compoundTag);
-        this.addPersistentAngerSaveData(compoundTag);
-    }
-
-    @Override
-    public int getRemainingPersistentAngerTime() {
-        return remainingPersistentAngerTime;
-    }
-
-    @Override
-    public void setRemainingPersistentAngerTime(int i) {
-        this.remainingPersistentAngerTime = i;
-    }
-
-    @Nullable
-    @Override
-    public UUID getPersistentAngerTarget() {
-        return this.persistentAngerTarget;
-    }
-
-    @Override
-    public void setPersistentAngerTarget(@Nullable UUID uuid) {
-        this.persistentAngerTarget = uuid;
-    }
-
-    @Override
-    public void startPersistentAngerTimer() {
-        this.setRemainingPersistentAngerTime(PERSISTENT_ANGER_TIME.sample(this.random));
+        }).triggerableAnim("attack", ATTACK));
     }
 }
