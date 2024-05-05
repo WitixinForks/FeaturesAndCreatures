@@ -42,8 +42,8 @@ public class Spear extends AbstractArrow implements GeoEntity {
 
     @org.jetbrains.annotations.Nullable
     @Override
-    protected EntityHitResult findHitEntity(Vec3 $$0, Vec3 $$1){
-        return this.dealtDamage ? null : super.findHitEntity($$0, $$1);
+    protected EntityHitResult findHitEntity(Vec3 hitVec, Vec3 endVec){
+        return this.dealtDamage ? null : super.findHitEntity(hitVec, endVec);
     }
 
 

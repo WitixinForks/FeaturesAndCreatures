@@ -376,8 +376,8 @@ public class Jockey extends PathfinderMob implements Npc, Merchant, GeoEntity, R
     }
 
     @Override
-    public void die(DamageSource $$0) {
-        super.die($$0);
+    public void die(DamageSource damageSource) {
+        super.die(damageSource);
         if (!this.level().isClientSide()) {
             if (this.isHolding(Items.POTION)) {
                 final ItemStack stack = this.getMainHandItem();
@@ -391,17 +391,17 @@ public class Jockey extends PathfinderMob implements Npc, Merchant, GeoEntity, R
     //Is it the mount?
     @org.jetbrains.annotations.Nullable
     @Override
-    public Entity changeDimension(ServerLevel $$0) {
+    public Entity changeDimension(ServerLevel serverLevel) {
         if (this.level() instanceof ServerLevel level) {
             this.removeJockey();
-            final Entity target = super.changeDimension($$0);
+            final Entity target = super.changeDimension(serverLevel);
             if (target instanceof Jockey jockey) {
                 JockeySavedData savedData = JockeySavedData.get(level.getServer());
                 savedData.setJockeyUUID(jockey.getUUID());
                 savedData.setJockeyCooldown(-1);
                 savedData.setSpawnPosition(jockey.blockPosition());
                 savedData.setJockeySpawned(true);
-                savedData.setDimensionId($$0.dimension());
+                savedData.setDimensionId(serverLevel.dimension());
                 savedData.setDirty();
             }
             return target;
@@ -454,8 +454,8 @@ public class Jockey extends PathfinderMob implements Npc, Merchant, GeoEntity, R
     }
 
     @Override
-    public void load(CompoundTag $$0){
-        super.load($$0);
+    public void load(CompoundTag compoundTag){
+        super.load(compoundTag);
         if (!this.level().isClientSide()) {
             JockeySavedData savedData = JockeySavedData.get(this.getServer());
             savedData.setSpawnPosition(this.blockPosition());
@@ -486,9 +486,6 @@ public class Jockey extends PathfinderMob implements Npc, Merchant, GeoEntity, R
         if(this.onGround() && event.isMoving()) {
             controller.setAnimation(WALK_ANIMATION);
             return PlayState.CONTINUE;
-        } else if(this.isAttacking()) {
-            controller.setAnimation(POTION_ANIMATION);
-            return PlayState.CONTINUE;
         } else if(this.isHolding(Items.POTION)) {
             controller.setAnimation(DRINK_ANIMATION);
             return PlayState.CONTINUE;
@@ -503,7 +500,8 @@ public class Jockey extends PathfinderMob implements Npc, Merchant, GeoEntity, R
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar registrar){
-        registrar.add(new AnimationController<>(this, "controller", 5, this::predicate));
+        registrar.add(new AnimationController<>(this, "controller", 5, this::predicate)
+                .triggerableAnim("throw", POTION_ANIMATION));
     }
 
     @Override
@@ -521,7 +519,7 @@ public class Jockey extends PathfinderMob implements Npc, Merchant, GeoEntity, R
 
     @Override
         public void performRangedAttack(LivingEntity target, float v){
-        this.setAttacking(true);
+        triggerAnim("controller", "throw");
         Vec3 vector3d = target.getDeltaMovement();
         double d0 = target.getX() + vector3d.x - this.getX();
         double d1 = target.getEyeY() - (double) 1.1F - this.getY();
@@ -536,7 +534,7 @@ public class Jockey extends PathfinderMob implements Npc, Merchant, GeoEntity, R
             this.level().playSound(null, this.getX(), this.getY(), this.getZ(), FnCSounds.JOCKEY_ATTACK.get(),
                     this.getSoundSource(), 1.0F, 0.8F + this.random.nextFloat() * 0.4F);
         }
-        this.level().addFreshEntity(thrownPotion); //TODO Drop potion if killed while drinking
+        this.level().addFreshEntity(thrownPotion);
     }
 
     public enum TradeType {

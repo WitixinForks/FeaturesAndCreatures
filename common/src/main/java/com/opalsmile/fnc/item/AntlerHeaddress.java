@@ -23,7 +23,7 @@ public abstract class AntlerHeaddress extends ArmorItem implements GeoItem {
 
     //No attributes, no armor
     @Override
-    public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot $$0){
+    public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot equipmentSlot){
         return ImmutableMultimap.of();
     }
 
