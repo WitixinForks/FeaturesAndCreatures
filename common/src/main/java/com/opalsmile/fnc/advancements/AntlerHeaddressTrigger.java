@@ -7,9 +7,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.Optional;
-import java.util.function.Predicate;
-
 public class AntlerHeaddressTrigger extends SimpleCriterionTrigger<AntlerHeaddressTrigger.Instance> {
 
     static final ResourceLocation ID = FnCConstants.resourceLocation("used_headdress");

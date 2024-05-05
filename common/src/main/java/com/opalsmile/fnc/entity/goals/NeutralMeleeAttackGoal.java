@@ -1,6 +1,5 @@
 package com.opalsmile.fnc.entity.goals;
 
-import com.opalsmile.fnc.entity.Boar;
 import com.opalsmile.fnc.entity.RideableNeutralMob;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;

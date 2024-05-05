@@ -4,15 +4,11 @@ import com.opalsmile.fnc.FnCConstants;
 import com.opalsmile.fnc.platform.services.FnCIConfigHelper;
 import eu.midnightdust.lib.config.MidnightConfig;
 import net.minecraft.ResourceLocationException;
-import net.minecraft.Util;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffects;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;

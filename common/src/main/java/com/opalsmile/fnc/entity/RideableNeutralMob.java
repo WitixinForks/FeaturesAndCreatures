@@ -2,7 +2,6 @@ package com.opalsmile.fnc.entity;
 
 import com.opalsmile.fnc.entity.goals.NeutralMeleeAttackGoal;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.EntityType;

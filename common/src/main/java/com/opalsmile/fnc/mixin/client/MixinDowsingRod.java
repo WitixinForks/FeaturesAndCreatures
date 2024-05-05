@@ -3,7 +3,6 @@ package com.opalsmile.fnc.mixin.client;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.opalsmile.fnc.client.DowsingRodHandRenderer;
 import com.opalsmile.fnc.registries.FnCItems;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;

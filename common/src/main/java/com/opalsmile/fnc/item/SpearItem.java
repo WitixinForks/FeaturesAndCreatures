@@ -1,11 +1,9 @@
 package com.opalsmile.fnc.item;
 
-import com.opalsmile.fnc.FnCConstants;
 import com.opalsmile.fnc.entity.Spear;
 import com.opalsmile.fnc.registries.FnCSounds;
 import com.opalsmile.fnc.util.FnCUtil;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -17,20 +15,14 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.Vanishable;
-import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
-import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.network.SerializableDataTicket;
 import software.bernie.geckolib.util.GeckoLibUtil;
-
-import java.util.Map;
 
 public abstract class SpearItem extends Item implements Vanishable, GeoItem {
 

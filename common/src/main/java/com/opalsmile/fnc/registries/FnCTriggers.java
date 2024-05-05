@@ -1,6 +1,5 @@
 package com.opalsmile.fnc.registries;
 
-import com.opalsmile.fnc.FnCConstants;
 import com.opalsmile.fnc.advancements.AntlerHeaddressTrigger;
 import com.opalsmile.fnc.advancements.JockeyTradeTrigger;
 import net.minecraft.advancements.CriteriaTriggers;

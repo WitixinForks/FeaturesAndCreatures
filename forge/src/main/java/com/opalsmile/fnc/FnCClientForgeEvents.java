@@ -2,7 +2,6 @@ package com.opalsmile.fnc;
 
 import com.opalsmile.fnc.client.FnCClient;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;

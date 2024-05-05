@@ -3,7 +3,6 @@ package com.opalsmile.fnc.client.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.opalsmile.fnc.FnCConstants;
 import com.opalsmile.fnc.client.model.SabertoothModel;
-import com.opalsmile.fnc.entity.Jackalope;
 import com.opalsmile.fnc.entity.Sabertooth;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
