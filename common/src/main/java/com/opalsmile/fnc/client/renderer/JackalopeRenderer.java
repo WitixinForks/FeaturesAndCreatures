@@ -10,14 +10,15 @@ import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 public class JackalopeRenderer extends GeoEntityRenderer<Jackalope> {
 
-    public JackalopeRenderer(EntityRendererProvider.Context dispatcher){
+    public JackalopeRenderer(EntityRendererProvider.Context dispatcher) {
         super(dispatcher, new JackalopeModel(FnCConstants.resourceLocation("jackalope"), true));
     }
 
     @Override
-    public void scaleModelForRender(float widthScale, float heightScale, PoseStack poseStack, Jackalope animatable, BakedGeoModel model, boolean isReRender, float partialTick, int packedLight, int packedOverlay){
-        super.scaleModelForRender(widthScale, heightScale, poseStack, animatable, model, isReRender, partialTick,
-                packedLight, packedOverlay);
+    public void scaleModelForRender(float widthScale, float heightScale, PoseStack poseStack, Jackalope animatable, BakedGeoModel model,
+                                    boolean isReRender, float partialTick, int packedLight, int packedOverlay) {
+        super.scaleModelForRender(widthScale, heightScale, poseStack, animatable, model, isReRender, partialTick, packedLight,
+                packedOverlay);
         if (!isReRender) {
             if (animatable.isBaby()) {
                 model.getBone("head").ifPresent(bone -> bone.updateScale(2, 2, 2));

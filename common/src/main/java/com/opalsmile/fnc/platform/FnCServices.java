@@ -15,10 +15,10 @@ public class FnCServices {
     public static final FnCINetworkHelper NETWORK = load(FnCINetworkHelper.class);
     public static final FnCIRegistrationHelper REGISTRATION = load(FnCIRegistrationHelper.class);
 
-    public static <T> T load(Class<T> clazz){
+    public static <T> T load(Class<T> clazz) {
 
-        final T loadedService = ServiceLoader.load(clazz).findFirst().orElseThrow(
-                () -> new NullPointerException("Failed to load service for " + clazz.getName()));
+        final T loadedService = ServiceLoader.load(clazz).findFirst().orElseThrow(() -> new NullPointerException("Failed to load service " +
+                "for " + clazz.getName()));
         FnCConstants.LOG.debug("Loaded {} for service {}", loadedService, clazz);
         return loadedService;
     }

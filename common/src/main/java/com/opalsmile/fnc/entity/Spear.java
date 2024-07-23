@@ -20,38 +20,37 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-
 public class Spear extends AbstractArrow implements GeoEntity {
 
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private ItemStack thrownStack = ItemStack.EMPTY;
     private boolean dealtDamage;
 
-    public Spear(EntityType<? extends AbstractArrow> entityType, Level level){
+    public Spear(EntityType<? extends AbstractArrow> entityType, Level level) {
         super(entityType, level);
     }
 
-    public Spear(Level level, LivingEntity thrower, ItemStack stack){
+    public Spear(Level level, LivingEntity thrower, ItemStack stack) {
         super(FnCEntities.SPEAR.get(), thrower, level);
         this.thrownStack = stack.copy();
     }
 
     @Override
-    protected ItemStack getPickupItem(){
+    protected ItemStack getPickupItem() {
         return this.thrownStack.copy();
     }
 
     @org.jetbrains.annotations.Nullable
     @Override
-    protected EntityHitResult findHitEntity(Vec3 hitVec, Vec3 endVec){
+    protected EntityHitResult findHitEntity(Vec3 hitVec, Vec3 endVec) {
         return this.dealtDamage ? null : super.findHitEntity(hitVec, endVec);
     }
 
-
     @Override
-    protected void onHitEntity(EntityHitResult result){
+    protected void onHitEntity(EntityHitResult result) {
         Entity entity = result.getEntity();
         float damage = 12.0F;
-        if(entity instanceof LivingEntity livingEntity) {
+        if (entity instanceof LivingEntity livingEntity) {
             damage += EnchantmentHelper.getDamageBonus(this.thrownStack, livingEntity.getMobType());
         }
 
@@ -59,12 +58,12 @@ public class Spear extends AbstractArrow implements GeoEntity {
         DamageSource damagesource = this.level().damageSources().trident(this, (owner == null ? this : owner));
         this.dealtDamage = true;
         SoundEvent soundevent = FnCSounds.SPEAR_ATTACK.get();
-        if(entity.hurt(damagesource, damage)) {
-            if(entity.getType() == EntityType.ENDERMAN) {
+        if (entity.hurt(damagesource, damage)) {
+            if (entity.getType() == EntityType.ENDERMAN) {
                 return;
             }
-            if(entity instanceof LivingEntity hitEntity) {
-                if(owner instanceof LivingEntity) {
+            if (entity instanceof LivingEntity hitEntity) {
+                if (owner instanceof LivingEntity) {
                     EnchantmentHelper.doPostHurtEffects(hitEntity, owner);
                     EnchantmentHelper.doPostDamageEffects((LivingEntity) owner, hitEntity);
                 }
@@ -77,42 +76,40 @@ public class Spear extends AbstractArrow implements GeoEntity {
     }
 
     @Override
-    public void playerTouch(Player player){
+    public void playerTouch(Player player) {
         Entity entity = this.getOwner();
-        if(entity == null || entity.getUUID().equals(player.getUUID())) {
+        if (entity == null || entity.getUUID().equals(player.getUUID())) {
             super.playerTouch(player);
         }
     }
 
-    public void readAdditionalSaveData(CompoundTag compoundTag){
+    public void readAdditionalSaveData(CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
-        if(compoundTag.contains("Spear", 10)) {
+        if (compoundTag.contains("Spear", 10)) {
             this.thrownStack = ItemStack.of(compoundTag.getCompound("Spear"));
         }
         this.dealtDamage = compoundTag.getBoolean("DealtDamage");
     }
 
-    public void addAdditionalSaveData(CompoundTag compoundTag){
+    public void addAdditionalSaveData(CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
         compoundTag.put("Spear", this.thrownStack.save(new CompoundTag()));
         compoundTag.putBoolean("DealtDamage", this.dealtDamage);
     }
 
-    public void tickDespawn(){
-        if(this.pickup != AbstractArrow.Pickup.ALLOWED) {
+    public void tickDespawn() {
+        if (this.pickup != AbstractArrow.Pickup.ALLOWED) {
             super.tickDespawn();
         }
     }
 
     @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar){
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
         //No animation geo renderer
     }
 
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-
     @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache(){
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return cache;
     }
 }

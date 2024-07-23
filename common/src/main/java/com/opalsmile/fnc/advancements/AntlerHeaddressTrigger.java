@@ -12,16 +12,17 @@ public class AntlerHeaddressTrigger extends SimpleCriterionTrigger<AntlerHeaddre
     static final ResourceLocation ID = FnCConstants.resourceLocation("used_headdress");
 
     @Override
-    public ResourceLocation getId(){
+    public ResourceLocation getId() {
         return ID;
     }
+
     @Override
-    public Instance createInstance(JsonObject jsonObject, ContextAwarePredicate predicate, DeserializationContext context){
+    public Instance createInstance(JsonObject jsonObject, ContextAwarePredicate predicate, DeserializationContext context) {
         ItemPredicate itemPredicate = ItemPredicate.fromJson(jsonObject.get("item_predicate"));
         return new Instance(predicate, itemPredicate);
     }
 
-    public void trigger(ServerPlayer player, ItemStack stack){
+    public void trigger(ServerPlayer player, ItemStack stack) {
         this.trigger(player, instance -> instance.test(stack));
     }
 
@@ -34,13 +35,13 @@ public class AntlerHeaddressTrigger extends SimpleCriterionTrigger<AntlerHeaddre
         }
 
         @Override
-        public JsonObject serializeToJson(SerializationContext serializationContext){
+        public JsonObject serializeToJson(SerializationContext serializationContext) {
             JsonObject jsonObject = super.serializeToJson(serializationContext);
             jsonObject.add("item_predicate", this.itemPredicate.serializeToJson());
             return jsonObject;
         }
 
-        public boolean test(ItemStack stack){
+        public boolean test(ItemStack stack) {
             return itemPredicate.matches(stack);
         }
     }

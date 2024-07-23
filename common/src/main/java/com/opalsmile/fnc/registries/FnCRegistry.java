@@ -4,7 +4,7 @@ import com.opalsmile.fnc.util.FnCUtil;
 
 public class FnCRegistry {
 
-    public static void initialise(){
+    public static void initialise() {
         FnCEntities.init();
         FnCBlocks.init();
         FnCItems.init();

@@ -16,7 +16,9 @@
       "trigger": "featuresandcreatures:used_headdress",
       "conditions": {
         "item": {
-          "items": ["featuresandcreatures:antler_headdress"]
+          "items": [
+            "featuresandcreatures:antler_headdress"
+          ]
         }
       }
     }

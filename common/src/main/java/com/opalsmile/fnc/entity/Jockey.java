@@ -66,14 +66,11 @@ import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-
 public class Jockey extends PathfinderMob implements Npc, Merchant, GeoEntity, RangedAttackMob {
     private static final String POTION_TRANSLATION_KEY = "entity." + FnCConstants.MOD_ID + ".jockey.potion";
     private static final String ARROW_TRANSLATION_KEY = "entity." + FnCConstants.MOD_ID + ".jockey.arrow";
-    private static final EntityDataAccessor<Boolean> ATTACKING = SynchedEntityData.defineId(Jockey.class,
-            EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Integer> ATTACK_TIMER = SynchedEntityData.defineId(Jockey.class,
-            EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> ATTACKING = SynchedEntityData.defineId(Jockey.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> ATTACK_TIMER = SynchedEntityData.defineId(Jockey.class, EntityDataSerializers.INT);
     private static final TargetingConditions TARGETING = TargetingConditions.forCombat().ignoreLineOfSight().range(32);
     private static final RawAnimation WALK_ANIMATION = RawAnimation.begin().thenLoop("animation.jockey.walk");
     private static final RawAnimation POTION_ANIMATION = RawAnimation.begin().thenLoop("animation.jockey.potion");
@@ -87,29 +84,28 @@ public class Jockey extends PathfinderMob implements Npc, Merchant, GeoEntity, R
 
     private int timeAlive;
 
-    public Jockey(EntityType<? extends Jockey> entityType, Level level){
+    public Jockey(EntityType<? extends Jockey> entityType, Level level) {
         super(entityType, level);
     }
 
-    public static AttributeSupplier.Builder createAttributes(){
+    public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 12.0).add(Attributes.MOVEMENT_SPEED, 0.2);
     }
 
-
-    public static boolean isRiding(Jockey jockey){
+    public static boolean isRiding(Jockey jockey) {
         Entity entity = jockey.getVehicle();
         return entity instanceof LivingEntity;
     }
 
     @Override
-    protected void defineSynchedData(){
+    protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(ATTACKING, false);
         this.entityData.define(ATTACK_TIMER, 10);
     }
 
     @Override
-    protected void registerGoals(){
+    protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(1, new RangedAttackGoal(this, 1.0, 60, 10.0F));
         this.goalSelector.addGoal(2, new FloatGoal(this));
@@ -121,33 +117,33 @@ public class Jockey extends PathfinderMob implements Npc, Merchant, GeoEntity, R
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(4, new MoveTowardsRestrictionGoal(this, 1.0));
         this.goalSelector.addGoal(0, new UseItemGoal<>(this, PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.HEALING),
-                        SoundEvents.GENERIC_DRINK, entity -> this.getHealth() <= 6));
+                SoundEvents.GENERIC_DRINK, entity -> this.getHealth() <= 6));
         this.targetSelector.addGoal(7, new HurtByTargetGoal(this));
     }
 
     @Override
-    public boolean showProgressBar(){
+    public boolean showProgressBar() {
         return false;
     }
 
     @Override
-    public SoundEvent getNotifyTradeSound(){
+    public SoundEvent getNotifyTradeSound() {
         return FnCSounds.JOCKEY_YES.get();
     }
 
     @Override
-    public boolean isClientSide(){
+    public boolean isClientSide() {
         return this.level().isClientSide();
     }
 
-    protected SoundEvent getTradeUpdatedSound(boolean agrees){
+    protected SoundEvent getTradeUpdatedSound(boolean agrees) {
         return agrees ? FnCSounds.JOCKEY_YES.get() : FnCSounds.JOCKEY_NO.get();
     }
 
     @Override
-    public InteractionResult mobInteract(Player player, InteractionHand hand){
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
-        if(!(itemstack.getItem() instanceof SpawnEggItem) && this.isAlive() && tradingPlayer == null) {
+        if (!(itemstack.getItem() instanceof SpawnEggItem) && this.isAlive() && tradingPlayer == null) {
             if (!this.level().isClientSide) {
                 if (this.getOffers().isEmpty()) return InteractionResult.PASS;
                 this.setTradingPlayer(player);
@@ -160,54 +156,54 @@ public class Jockey extends PathfinderMob implements Npc, Merchant, GeoEntity, R
     }
 
     @Override
-    protected float getStandingEyeHeight(Pose pose, EntityDimensions size){
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions size) {
         return size.height * 0.85F;
     }
 
     @Override
-    public boolean canBeLeashed(Player player){
+    public boolean canBeLeashed(Player player) {
         return false;
     }
 
     @Nullable
     @Override
-    public Player getTradingPlayer(){
+    public Player getTradingPlayer() {
         return tradingPlayer;
     }
 
     @Override
-    public void setTradingPlayer(@Nullable Player player){
+    public void setTradingPlayer(@Nullable Player player) {
         this.tradingPlayer = player;
     }
 
-    public boolean isAttacking(){
+    public boolean isAttacking() {
         return this.entityData.get(ATTACKING);
     }
 
-    public void setAttacking(boolean attack){
+    public void setAttacking(boolean attack) {
         this.entityData.set(ATTACKING, attack);
     }
 
-    public int getAttackTimer(){
+    public int getAttackTimer() {
         return this.entityData.get(ATTACK_TIMER);
 
     }
 
-    public void setAttackTimer(int attackTimer){
+    public void setAttackTimer(int attackTimer) {
         this.entityData.set(ATTACK_TIMER, attackTimer);
     }
 
     @Override
-    public MerchantOffers getOffers(){
-        if(this.offers == null) {
+    public MerchantOffers getOffers() {
+        if (this.offers == null) {
             this.offers = new MerchantOffers();
 
             final Predicate<MobEffect> blacklisted = FnCServices.CONFIG.jockeyEffectBlacklist()::contains;
-            final List<MobEffect> availableEffects = BuiltInRegistries.MOB_EFFECT.stream().filter(blacklisted.negate()).collect(
-                    Collectors.toList());
+            final List<MobEffect> availableEffects =
+                    BuiltInRegistries.MOB_EFFECT.stream().filter(blacklisted.negate()).collect(Collectors.toList());
             final boolean empty = availableEffects.isEmpty();
 
-            for(int i = 0; i < 7; ++i) {
+            for (int i = 0; i < 7; ++i) {
                 final List<MobEffectInstance> effects = new ArrayList<>();
                 final int price = random.nextInt(8) + 5;
                 final int effectCount = generateEffectCount();
@@ -215,7 +211,7 @@ public class Jockey extends PathfinderMob implements Npc, Merchant, GeoEntity, R
 
                 int amount = type.getAmount();
 
-                for(int j = 0; j < effectCount; ++j) {
+                for (int j = 0; j < effectCount; ++j) {
                     MobEffect effect = empty ? MobEffects.REGENERATION : FnCUtil.getRandomElement(random, availableEffects);
                     availableEffects.remove(effect);
                     effects.add(new MobEffectInstance(effect, 1800, generatePotionStrength(effectCount)));
@@ -224,29 +220,27 @@ public class Jockey extends PathfinderMob implements Npc, Merchant, GeoEntity, R
                 Item item = type.getTrade();
                 String translationKey = type.getTranslationKey();
 
-                ItemStack potion = PotionUtils.setCustomEffects(new ItemStack(item, amount), effects).setHoverName(
-                        Component.translatable(translationKey).withStyle(Style.EMPTY.withItalic(false)).withStyle(
-                                ChatFormatting.YELLOW));
+                ItemStack potion =
+                        PotionUtils.setCustomEffects(new ItemStack(item, amount), effects).setHoverName(Component.translatable(translationKey).withStyle(Style.EMPTY.withItalic(false)).withStyle(ChatFormatting.YELLOW));
                 potion.getTag().putInt("CustomPotionColor", PotionUtils.getColor(effects));
 
-                offers.add(new MerchantOffer(new ItemStack(Items.DIAMOND, price), ItemStack.EMPTY, potion,
-                        Integer.MAX_VALUE, 0, 1));
+                offers.add(new MerchantOffer(new ItemStack(Items.DIAMOND, price), ItemStack.EMPTY, potion, Integer.MAX_VALUE, 0, 1));
             }
             Collections.shuffle(offers); //Shuffle the order of the offers.
         }
         return offers;
     }
 
-    private TradeType generateTradeType(){
+    private TradeType generateTradeType() {
         TradeType type;
         int typeChance = random.nextInt(20);
-        if(typeChance < 2) {
+        if (typeChance < 2) {
             type = TradeType.ARROWS_32;
-        } else if(typeChance < 5) {
+        } else if (typeChance < 5) {
             type = TradeType.ARROWS_16;
-        } else if(typeChance < 8) {
+        } else if (typeChance < 8) {
             type = TradeType.LINGERING;
-        } else if(typeChance < 12) {
+        } else if (typeChance < 12) {
             type = TradeType.SPLASH;
         } else {
             type = TradeType.DRINK;
@@ -254,12 +248,12 @@ public class Jockey extends PathfinderMob implements Npc, Merchant, GeoEntity, R
         return type;
     }
 
-    private int generateEffectCount(){
+    private int generateEffectCount() {
         int effectCount;
         int effectCountChance = random.nextInt(20);
-        if(effectCountChance < 3) {
+        if (effectCountChance < 3) {
             effectCount = 3;
-        } else if(effectCountChance < 8) {
+        } else if (effectCountChance < 8) {
             effectCount = 2;
         } else {
             effectCount = 1;
@@ -267,40 +261,40 @@ public class Jockey extends PathfinderMob implements Npc, Merchant, GeoEntity, R
         return effectCount;
     }
 
-    private int generatePotionStrength(int effectCount){
+    private int generatePotionStrength(int effectCount) {
         int strength;
         int strengthChance = random.nextInt(100);
         switch (effectCount) {
             case 1 -> {
-                if(strengthChance < 10) {
+                if (strengthChance < 10) {
                     strength = 4;
-                } else if(strengthChance < 35) {
+                } else if (strengthChance < 35) {
                     strength = 3;
-                } else if(strengthChance < 65) {
+                } else if (strengthChance < 65) {
                     strength = 2;
-                } else if(strengthChance < 90) {
+                } else if (strengthChance < 90) {
                     strength = 1;
                 } else {
                     strength = 0;
                 }
             }
             case 2 -> {
-                if(strengthChance == 0) {
+                if (strengthChance == 0) {
                     strength = 4;
-                } else if(strengthChance < 8) {
+                } else if (strengthChance < 8) {
                     strength = 3;
-                } else if(strengthChance < 38) {
+                } else if (strengthChance < 38) {
                     strength = 2;
-                } else if(strengthChance < 80) {
+                } else if (strengthChance < 80) {
                     strength = 1;
                 } else {
                     strength = 0;
                 }
             }
             default -> {
-                if(strengthChance < 17) {
+                if (strengthChance < 17) {
                     strength = 2;
-                } else if(strengthChance < 40) {
+                } else if (strengthChance < 40) {
                     strength = 1;
                 } else {
                     strength = 0;
@@ -311,56 +305,53 @@ public class Jockey extends PathfinderMob implements Npc, Merchant, GeoEntity, R
     }
 
     @Override
-    public void overrideOffers(@Nullable MerchantOffers offers){
+    public void overrideOffers(@Nullable MerchantOffers offers) {
     }
 
-    public void notifyTrade(MerchantOffer offer){
+    public void notifyTrade(MerchantOffer offer) {
         offer.increaseUses();
         this.ambientSoundTime = -this.getAmbientSoundInterval();
-        if(this.tradingPlayer instanceof ServerPlayer serverPlayer) {
+        if (this.tradingPlayer instanceof ServerPlayer serverPlayer) {
             FnCTriggers.JOCKEY_TRADE.trigger(serverPlayer);
         }
     }
 
     @Override
-    public void notifyTradeUpdated(ItemStack stack)
-    {
-        if(!this.level().isClientSide && this.ambientSoundTime > -this.getAmbientSoundInterval() + 20) {
+    public void notifyTradeUpdated(ItemStack stack) {
+        if (!this.level().isClientSide && this.ambientSoundTime > -this.getAmbientSoundInterval() + 20) {
             this.ambientSoundTime = -this.getAmbientSoundInterval();
             this.playSound(this.getTradeUpdatedSound(!stack.isEmpty()), this.getSoundVolume(), this.getVoicePitch());
         }
     }
 
     @Override
-    public int getVillagerXp(){
+    public int getVillagerXp() {
         return 0;
     }
 
     @Override
-    public void overrideXp(int xp){
+    public void overrideXp(int xp) {
     }
 
     @Override
-    public void tick(){
+    public void tick() {
         //TODO probably see how other mobs ride vehicles as movement is janky as of now.
         super.tick();
         ++timeAlive;
-        if(isAttacking()) {
+        if (isAttacking()) {
             this.setAttackTimer(this.getAttackTimer() - 1);
-            if(getAttackTimer() <= 0) {
+            if (getAttackTimer() <= 0) {
                 setAttacking(false);
                 setAttackTimer(10);
             }
         }
-        if(this.getVehicle() instanceof Mob mount) {
-            if(getTarget() != null) {
+        if (this.getVehicle() instanceof Mob mount) {
+            if (getTarget() != null) {
                 mount.setTarget(this.getTarget());
-                if(mount instanceof NeutralMob neutralMob)
-                    neutralMob.startPersistentAngerTimer();
-            } else if(mount.getTarget() != null)
-                setTarget(mount.getTarget());
+                if (mount instanceof NeutralMob neutralMob) neutralMob.startPersistentAngerTimer();
+            } else if (mount.getTarget() != null) setTarget(mount.getTarget());
         }
-        if(!this.level().isClientSide) {
+        if (!this.level().isClientSide) {
             updateJockeyPosition();
             if (this.timeAlive >= FnCServices.CONFIG.jockeyDespawnTime() && (FnCServices.CONFIG.namedJockeyDespawn() || !this.hasCustomName())) {
                 this.removeJockey();
@@ -411,28 +402,28 @@ public class Jockey extends PathfinderMob implements Npc, Merchant, GeoEntity, R
 
     @org.jetbrains.annotations.Nullable
     @Override
-    protected SoundEvent getAmbientSound(){
+    protected SoundEvent getAmbientSound() {
         return getTarget() != null ? FnCSounds.JOCKEY_NO.get() : FnCSounds.JOCKEY_AMBIENT.get();
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource damageSource){
+    protected SoundEvent getHurtSound(DamageSource damageSource) {
         return FnCSounds.JOCKEY_HURT.get();
     }
 
     @Override
-    protected SoundEvent getDeathSound(){
+    protected SoundEvent getDeathSound() {
         return FnCSounds.JOCKEY_DEATH.get();
     }
 
     /**
      * May only be called on the server side.
      */
-    private void updateJockeyPosition(){
+    private void updateJockeyPosition() {
         final JockeySavedData savedData = JockeySavedData.get(this.getServer());
-        if(!this.lastBlockPos.equals(this.blockPosition())) {
+        if (!this.lastBlockPos.equals(this.blockPosition())) {
             final UUID uuid = savedData.getJockeyUUID();
-            if(this.uuid.equals(uuid)) {
+            if (this.uuid.equals(uuid)) {
                 savedData.setSpawnPosition(this.blockPosition());
                 savedData.setDirty();
                 FnCServices.NETWORK.broadcastJockeySpawning((ServerLevel) this.level(), this.blockPosition());
@@ -444,7 +435,7 @@ public class Jockey extends PathfinderMob implements Npc, Merchant, GeoEntity, R
     public void removeJockey() {
         final JockeySavedData savedData = JockeySavedData.get(this.getServer());
         final UUID jockeyUUID = savedData.getJockeyUUID();
-        if(this.uuid.equals(jockeyUUID)) {
+        if (this.uuid.equals(jockeyUUID)) {
             savedData.setJockeyUUID(null);
             savedData.setSpawnPosition(null);
             savedData.clearDimensionId();
@@ -454,7 +445,7 @@ public class Jockey extends PathfinderMob implements Npc, Merchant, GeoEntity, R
     }
 
     @Override
-    public void load(CompoundTag compoundTag){
+    public void load(CompoundTag compoundTag) {
         super.load(compoundTag);
         if (!this.level().isClientSide()) {
             JockeySavedData savedData = JockeySavedData.get(this.getServer());
@@ -463,7 +454,7 @@ public class Jockey extends PathfinderMob implements Npc, Merchant, GeoEntity, R
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag compoundTag){
+    public void addAdditionalSaveData(CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
         compoundTag.putInt("TimeAlive", timeAlive);
         compoundTag.putBoolean("Attacking", isAttacking());
@@ -472,25 +463,24 @@ public class Jockey extends PathfinderMob implements Npc, Merchant, GeoEntity, R
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag nbt){
+    public void readAdditionalSaveData(CompoundTag nbt) {
         super.readAdditionalSaveData(nbt);
         this.timeAlive = nbt.getInt("TimeAlive");
         setAttacking(nbt.getBoolean("Attacking"));
         setAttackTimer(nbt.getInt("AttackTimer"));
-        if (nbt.contains("Offers", Tag.TAG_COMPOUND))
-            offers = new MerchantOffers(nbt.getCompound("Offers"));
+        if (nbt.contains("Offers", Tag.TAG_COMPOUND)) offers = new MerchantOffers(nbt.getCompound("Offers"));
     }
 
-    private PlayState predicate(AnimationState<Jockey> event){
+    private PlayState predicate(AnimationState<Jockey> event) {
         AnimationController<?> controller = event.getController();
-        if(this.onGround() && event.isMoving()) {
+        if (this.onGround() && event.isMoving()) {
             controller.setAnimation(WALK_ANIMATION);
             return PlayState.CONTINUE;
-        } else if(this.isHolding(Items.POTION)) {
+        } else if (this.isHolding(Items.POTION)) {
             controller.setAnimation(DRINK_ANIMATION);
             return PlayState.CONTINUE;
         }
-        if(isRiding(this)) {
+        if (isRiding(this)) {
             controller.setAnimation(SIT_ANIMATION);
             return PlayState.CONTINUE;
         } else {
@@ -499,26 +489,25 @@ public class Jockey extends PathfinderMob implements Npc, Merchant, GeoEntity, R
     }
 
     @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar registrar){
-        registrar.add(new AnimationController<>(this, "controller", 5, this::predicate)
-                .triggerableAnim("throw", POTION_ANIMATION));
+    public void registerControllers(AnimatableManager.ControllerRegistrar registrar) {
+        registrar.add(new AnimationController<>(this, "controller", 5, this::predicate).triggerableAnim("throw", POTION_ANIMATION));
     }
 
     @Override
-    public void rideTick(){
+    public void rideTick() {
         super.rideTick();
-        if(this.getVehicle() instanceof PathfinderMob pathfinderMob) {
+        if (this.getVehicle() instanceof PathfinderMob pathfinderMob) {
             this.yBodyRot = pathfinderMob.yBodyRot;
         }
     }
 
     @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache(){
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.factory;
     }
 
     @Override
-        public void performRangedAttack(LivingEntity target, float v){
+    public void performRangedAttack(LivingEntity target, float v) {
         triggerAnim("controller", "throw");
         Vec3 vector3d = target.getDeltaMovement();
         double d0 = target.getX() + vector3d.x - this.getX();
@@ -530,9 +519,9 @@ public class Jockey extends PathfinderMob implements Npc, Merchant, GeoEntity, R
         thrownPotion.setItem(PotionUtils.setPotion(new ItemStack(Items.SPLASH_POTION), potion));
         thrownPotion.setXRot(thrownPotion.getXRot() + 20);
         thrownPotion.shoot(d0, d1 + (double) (f * 0.2F), d2, 0.75F, 8.0F);
-        if(!this.isSilent()) {
-            this.level().playSound(null, this.getX(), this.getY(), this.getZ(), FnCSounds.JOCKEY_ATTACK.get(),
-                    this.getSoundSource(), 1.0F, 0.8F + this.random.nextFloat() * 0.4F);
+        if (!this.isSilent()) {
+            this.level().playSound(null, this.getX(), this.getY(), this.getZ(), FnCSounds.JOCKEY_ATTACK.get(), this.getSoundSource(),
+                    1.0F, 0.8F + this.random.nextFloat() * 0.4F);
         }
         this.level().addFreshEntity(thrownPotion);
     }
@@ -555,15 +544,15 @@ public class Jockey extends PathfinderMob implements Npc, Merchant, GeoEntity, R
             this.translationKey = translationKey;
         }
 
-        public int getAmount(){
+        public int getAmount() {
             return amount;
         }
 
-        public Item getTrade(){
+        public Item getTrade() {
             return trade;
         }
 
-        public String getTranslationKey(){
+        public String getTranslationKey() {
             return translationKey;
         }
     }
@@ -574,35 +563,34 @@ public class Jockey extends PathfinderMob implements Npc, Merchant, GeoEntity, R
         public double distance;
         public float speed;
 
-
-        public FollowPlayerGoal(Jockey jockey, double distance, float speed){
+        public FollowPlayerGoal(Jockey jockey, double distance, float speed) {
             this.jockey = jockey;
             this.distance = distance;
             this.speed = speed;
         }
 
         @Override
-        public boolean canUse(){
+        public boolean canUse() {
             return jockey.isAlive();
         }
 
         @Override
-        public void start(){
+        public void start() {
             super.start();
         }
 
         @Override
-        public void stop(){
+        public void stop() {
             this.jockey.getNavigation().stop();
             super.stop();
         }
 
         @Override
-        public void tick(){
+        public void tick() {
             super.tick();
             this.jockey.followingPlayer = this.jockey.level().getNearestPlayer(TARGETING, this.jockey);
-            if(this.jockey.followingPlayer == null) return;
-            if(this.jockey.distanceToSqr(this.jockey.followingPlayer) < distance) {
+            if (this.jockey.followingPlayer == null) return;
+            if (this.jockey.distanceToSqr(this.jockey.followingPlayer) < distance) {
                 this.jockey.getNavigation().stop();
             } else {
                 this.jockey.getNavigation().moveTo(this.jockey.followingPlayer, speed);
@@ -617,36 +605,35 @@ public class Jockey extends PathfinderMob implements Npc, Merchant, GeoEntity, R
         public float speed;
         public Mob mount;
 
-
-        public MountFollowPlayerGoal(Jockey jockey, double distance, float speed){
+        public MountFollowPlayerGoal(Jockey jockey, double distance, float speed) {
             this.jockey = jockey;
             this.distance = distance;
             this.speed = speed;
         }
 
         @Override
-        public boolean canUse(){
+        public boolean canUse() {
             return isRiding(jockey);
         }
 
         @Override
-        public void start(){
+        public void start() {
             mount = (Mob) jockey.getVehicle();
             super.start();
         }
 
         @Override
-        public void stop(){
+        public void stop() {
             this.jockey.getNavigation().stop();
             super.stop();
         }
 
         @Override
-        public void tick(){
+        public void tick() {
             super.tick();
             this.jockey.followingPlayer = this.jockey.level().getNearestPlayer(TARGETING, this.jockey);
-            if(this.jockey.followingPlayer == null) return;
-            if(this.mount.distanceToSqr(this.jockey.followingPlayer) < distance) {
+            if (this.jockey.followingPlayer == null) return;
+            if (this.mount.distanceToSqr(this.jockey.followingPlayer) < distance) {
                 this.mount.getNavigation().stop();
             } else {
                 this.mount.getNavigation().moveTo(this.jockey.followingPlayer, speed);

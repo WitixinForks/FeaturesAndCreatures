@@ -13,9 +13,11 @@ import net.minecraft.world.entity.HumanoidArm;
 
 public class DowsingRodHandRenderer {
 
-    public static final ModelResourceLocation SPEAR_IN_HAND_MODEL = new ModelResourceLocation(FnCConstants.MOD_ID, "spear_in_hand", "inventory");
+    public static final ModelResourceLocation SPEAR_IN_HAND_MODEL = new ModelResourceLocation(FnCConstants.MOD_ID, "spear_in_hand",
+            "inventory");
 
-    private static void renderHand(AbstractClientPlayer player, PoseStack stack, MultiBufferSource source, int packedLight, HumanoidArm arm) {
+    private static void renderHand(AbstractClientPlayer player, PoseStack stack, MultiBufferSource source, int packedLight,
+                                   HumanoidArm arm) {
         PlayerRenderer playerRenderer = (PlayerRenderer) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
         stack.pushPose();
         float armTranslation = arm == HumanoidArm.RIGHT ? 1.0F : -1.0F;
@@ -31,8 +33,8 @@ public class DowsingRodHandRenderer {
         stack.popPose();
     }
 
-    public static void render(PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight, float playerRotation, float lerpedArmHeight, float handAttackAnim,
-                             AbstractClientPlayer player) {
+    public static void render(PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight, float playerRotation,
+                              float lerpedArmHeight, float handAttackAnim, AbstractClientPlayer player) {
         float attackAnimSqrt = Mth.sqrt(handAttackAnim);
         float yOffset = -0.2F * Mth.sin(handAttackAnim * (float) Math.PI);
         float ZOffset = -0.4F * Mth.sin(attackAnimSqrt * (float) Math.PI);

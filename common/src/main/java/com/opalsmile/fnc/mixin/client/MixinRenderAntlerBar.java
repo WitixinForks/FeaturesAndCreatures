@@ -19,7 +19,8 @@ public class MixinRenderAntlerBar {
     @Shadow
     int screenHeight;
 
-    @Inject(method = "Lnet/minecraft/client/gui/Gui;renderExperienceBar(Lnet/minecraft/client/gui/GuiGraphics;I)V", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "Lnet/minecraft/client/gui/Gui;renderExperienceBar(Lnet/minecraft/client/gui/GuiGraphics;I)V", at = @At("HEAD"),
+            cancellable = true)
     private void featuresandcreatures_renderExperienceBar(GuiGraphics graphics, int position, CallbackInfo callbackInfo) {
         ItemStack headSlot = Minecraft.getInstance().player.getItemBySlot(EquipmentSlot.HEAD);
         if (headSlot.is(FnCItems.ANTLER_HEADDRESS.get())) {

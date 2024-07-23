@@ -24,29 +24,34 @@ public class Sabertooth extends RideableNeutralMob {
     private static final RawAnimation WALK = RawAnimation.begin().thenLoop("animation.sabertooth.walk");
     private static final RawAnimation ATTACK = RawAnimation.begin().then("animation.sabertooth.attack", Animation.LoopType.PLAY_ONCE);
 
-    public Sabertooth(EntityType<? extends RideableMob> entityType, Level level){
+    public Sabertooth(EntityType<? extends RideableMob> entityType, Level level) {
         super(entityType, level);
     }
 
+    public static AttributeSupplier.Builder createAttributes() {
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 12.0D).add(Attributes.MOVEMENT_SPEED, 0.3F).add(Attributes.ATTACK_DAMAGE, 4);
+    }
+
     @Override
-    protected void registerGoals(){
+    protected void registerGoals() {
         super.registerGoals();
-        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Fox.class, 10, true, true, fox -> ((Fox)fox).getVariant() == Fox.Type.SNOW));
+        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Fox.class, 10, true, true,
+                fox -> ((Fox) fox).getVariant() == Fox.Type.SNOW));
         this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Sheep.class, 10, true, true, null));
     }
 
     @Override
-    TagKey<Item> getFoodTag(){
+    TagKey<Item> getFoodTag() {
         return ItemTags.FISHES;
     }
 
     @Override
-    SoundEvent getSaddleSound(){
+    SoundEvent getSaddleSound() {
         return SoundEvents.HORSE_SADDLE;
     }
 
     @Override
-    int getTimeToAttack(){
+    int getTimeToAttack() {
         return 4;
     }
 
@@ -55,14 +60,10 @@ public class Sabertooth extends RideableNeutralMob {
         return false;
     }
 
-    public static AttributeSupplier.Builder createAttributes(){
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 12.0D).add(Attributes.MOVEMENT_SPEED, 0.3F).add(Attributes.ATTACK_DAMAGE, 4);
-    }
-
     @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar){
-        controllerRegistrar.add(new AnimationController<>(this, "controller",20, state -> {
-            if(state.isMoving()) {
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
+        controllerRegistrar.add(new AnimationController<>(this, "controller", 20, state -> {
+            if (state.isMoving()) {
                 return state.setAndContinue(WALK);
             }
             return PlayState.STOP;

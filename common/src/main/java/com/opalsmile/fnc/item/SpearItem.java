@@ -28,7 +28,7 @@ public abstract class SpearItem extends Item implements Vanishable, GeoItem {
 
     private final AnimatableInstanceCache instanceCache = GeckoLibUtil.createInstanceCache(this);
 
-    public SpearItem(Properties itemProperties){
+    public SpearItem(Properties itemProperties) {
         super(itemProperties);
         SingletonGeoAnimatable.registerSyncedAnimatable(this);
     }
@@ -39,7 +39,7 @@ public abstract class SpearItem extends Item implements Vanishable, GeoItem {
     }
 
     @Override
-    public void onUseTick(Level level, LivingEntity livingEntity, ItemStack itemStack, int remainingTicks){
+    public void onUseTick(Level level, LivingEntity livingEntity, ItemStack itemStack, int remainingTicks) {
         if (!level.isClientSide()) {
             this.setAnimData(livingEntity, GeoItem.getOrAssignId(itemStack, (ServerLevel) level), FnCUtil.SPEAR_USE, true);
         }
@@ -47,7 +47,7 @@ public abstract class SpearItem extends Item implements Vanishable, GeoItem {
     }
 
     @Override
-    public int getEnchantmentValue(){
+    public int getEnchantmentValue() {
         return 1;
     }
 
@@ -56,7 +56,7 @@ public abstract class SpearItem extends Item implements Vanishable, GeoItem {
     }
 
     @Override
-    public void releaseUsing(ItemStack stack, Level level, LivingEntity livingEntity, int timeLeft){
+    public void releaseUsing(ItemStack stack, Level level, LivingEntity livingEntity, int timeLeft) {
         if (!livingEntity.level().isClientSide && livingEntity instanceof Player player) {
             this.setAnimData(livingEntity, GeoItem.getOrAssignId(stack, (ServerLevel) level), FnCUtil.SPEAR_USE, false);
             int i = this.getUseDuration(stack) - timeLeft;
@@ -66,7 +66,7 @@ public abstract class SpearItem extends Item implements Vanishable, GeoItem {
                 });
                 Spear spear = new Spear(level, player, stack);
                 spear.shootFromRotation(player, player.getXRot(), player.getYRot(), 0, 2.5f, 1.0F);
-                if(player.getAbilities().instabuild) {
+                if (player.getAbilities().instabuild) {
                     spear.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
                 }
                 int fireAspectLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.FIRE_ASPECT, stack);
@@ -75,7 +75,7 @@ public abstract class SpearItem extends Item implements Vanishable, GeoItem {
                 }
                 level.addFreshEntity(spear);
                 level.playSound(null, spear, FnCSounds.SPEAR_THROW.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
-                if(!player.getAbilities().instabuild) {
+                if (!player.getAbilities().instabuild) {
                     player.getInventory().removeItem(stack);
                 }
             }
@@ -91,11 +91,11 @@ public abstract class SpearItem extends Item implements Vanishable, GeoItem {
     }
 
     @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllers){
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
     }
 
     @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache(){
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return instanceCache;
     }
 

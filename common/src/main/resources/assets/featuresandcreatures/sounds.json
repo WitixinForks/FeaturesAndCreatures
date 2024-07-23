@@ -88,10 +88,10 @@
   },
   "entity.jackalope.hurt": {
     "sounds": [
-       "mob/rabbit/hurt1",
-       "mob/rabbit/hurt2",
-       "mob/rabbit/hurt3",
-       "mob/rabbit/hurt4"
+      "mob/rabbit/hurt1",
+      "mob/rabbit/hurt2",
+      "mob/rabbit/hurt3",
+      "mob/rabbit/hurt4"
     ],
     "subtitle": "subtitles.entity.jackalope.hurts"
   },

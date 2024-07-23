@@ -25,12 +25,12 @@ public abstract class RideableNeutralMob extends RideableMob implements NeutralM
     private UUID persistentAngerTarget;
     private boolean isAttacking = false;
 
-    public RideableNeutralMob(EntityType<? extends Animal> entityType, Level level){
+    public RideableNeutralMob(EntityType<? extends Animal> entityType, Level level) {
         super(entityType, level);
     }
 
     @Override
-    protected void registerGoals(){
+    protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(2, new NeutralMeleeAttackGoal(this, 1.5, true));
         this.goalSelector.addGoal(6, new BreedGoal(this, 1.0));

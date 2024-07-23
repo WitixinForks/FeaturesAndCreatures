@@ -13,18 +13,18 @@ public class JockeyTradeTrigger extends SimpleCriterionTrigger<JockeyTradeTrigge
     static final ResourceLocation ID = FnCConstants.resourceLocation("jockey_trade");
 
     @Override
-    public ResourceLocation getId(){
+    public ResourceLocation getId() {
         return ID;
     }
 
     @Override
-    public Instance createInstance(JsonObject jsonObject, ContextAwarePredicate playerPredicate, DeserializationContext context){
+    public Instance createInstance(JsonObject jsonObject, ContextAwarePredicate playerPredicate, DeserializationContext context) {
         ContextAwarePredicate entityPredicate = EntityPredicate.fromJson(jsonObject, "jockey", context);
         ItemPredicate itemPredicate = ItemPredicate.fromJson(jsonObject.get("item_predicate"));
         return new Instance(playerPredicate, entityPredicate, itemPredicate);
     }
 
-    public void trigger(ServerPlayer player){
+    public void trigger(ServerPlayer player) {
         this.trigger(player, instance -> true);
     }
 
@@ -32,22 +32,22 @@ public class JockeyTradeTrigger extends SimpleCriterionTrigger<JockeyTradeTrigge
         private final ContextAwarePredicate jockey;
         private final ItemPredicate itemPredicate;
 
-        public Instance(ContextAwarePredicate playerPredicate, ContextAwarePredicate jockeyPredicate, ItemPredicate itemPredicate){
+        public Instance(ContextAwarePredicate playerPredicate, ContextAwarePredicate jockeyPredicate, ItemPredicate itemPredicate) {
             super(JockeyTradeTrigger.ID, playerPredicate);
             this.jockey = jockeyPredicate;
             this.itemPredicate = itemPredicate;
         }
 
         @Override
-        public JsonObject serializeToJson(SerializationContext serializationContext){
+        public JsonObject serializeToJson(SerializationContext serializationContext) {
             JsonObject jsonObject = super.serializeToJson(serializationContext);
             jsonObject.add("item_predicate", this.itemPredicate.serializeToJson());
             jsonObject.add("jockey", this.jockey.toJson(serializationContext));
             return jsonObject;
         }
 
-        public boolean matches(LootContext lootContext, ItemStack stack){
-            if(!this.jockey.matches(lootContext)) {
+        public boolean matches(LootContext lootContext, ItemStack stack) {
+            if (!this.jockey.matches(lootContext)) {
                 return false;
             } else {
                 return this.itemPredicate.matches(stack);

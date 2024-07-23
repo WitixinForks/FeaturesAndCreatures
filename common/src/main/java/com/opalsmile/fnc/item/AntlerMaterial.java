@@ -16,47 +16,47 @@ public class AntlerMaterial implements ArmorMaterial, StringRepresentable {
     }
 
     @Override
-    public String getSerializedName(){
+    public String getSerializedName() {
         return name;
     }
 
     @Override
-    public int getDurabilityForType(ArmorItem.Type var1){
+    public int getDurabilityForType(ArmorItem.Type var1) {
         return 0;
     }
 
     @Override
-    public int getDefenseForType(ArmorItem.Type var1){
+    public int getDefenseForType(ArmorItem.Type var1) {
         return 0;
     }
 
     @Override
-    public int getEnchantmentValue(){
+    public int getEnchantmentValue() {
         return 0;
     }
 
     @Override
-    public SoundEvent getEquipSound(){
+    public SoundEvent getEquipSound() {
         return SoundEvents.ARMOR_EQUIP_LEATHER;
     }
 
     @Override
-    public Ingredient getRepairIngredient(){
+    public Ingredient getRepairIngredient() {
         return Ingredient.EMPTY;
     }
 
     @Override
-    public String getName(){
+    public String getName() {
         return name;
     }
 
     @Override
-    public float getToughness(){
+    public float getToughness() {
         return 0;
     }
 
     @Override
-    public float getKnockbackResistance(){
+    public float getKnockbackResistance() {
         return 0;
     }
 }

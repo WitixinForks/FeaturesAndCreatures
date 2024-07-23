@@ -22,7 +22,8 @@ import java.util.UUID;
 public class AntlerHandler {
 
     private static final UUID ANTLER_HEADDRESS_UUID = UUID.fromString("37822605-a8d7-4ae4-bc85-c11ff9f211c4");
-    private static final AttributeModifier ANTLER_HEADDRESS_MODIFIER = new AttributeModifier(ANTLER_HEADDRESS_UUID, "Antler Headdress Slow", -0.05, AttributeModifier.Operation.ADDITION);
+    private static final AttributeModifier ANTLER_HEADDRESS_MODIFIER = new AttributeModifier(ANTLER_HEADDRESS_UUID, "Antler Headdress " +
+            "Slow", -0.05, AttributeModifier.Operation.ADDITION);
 
     private static final float MAX_KNOCKBACK = 3;
     private static final float MAX_CHARGE = 4f;
@@ -41,12 +42,10 @@ public class AntlerHandler {
                 chargeForward(player, storage.value);
                 player.getCooldowns().addCooldown(FnCServices.PLATFORM.getAntlerHeaddress().get(), ANTLER_COOLDOWN);
                 storage.reset();
-            }
-            else {
+            } else {
                 storage.increment();
             }
-        }
-        else {
+        } else {
             if (!released && !player.getCooldowns().isOnCooldown(FnCServices.PLATFORM.getAntlerHeaddress().get())) {
                 startChargingHeaddress(player, ANTLER_HEADDRESS_MODIFIER);
                 storage.start();
@@ -81,7 +80,8 @@ public class AntlerHandler {
                 FnCTriggers.ANTLER_HEADDRESS.trigger(player, player.getItemBySlot(EquipmentSlot.HEAD));
                 entity.move(MoverType.PLAYER, new Vec3(knockback * vec.x, 2.0, knockback * vec.z));
                 entity.hurt(level.damageSources().mobAttack(player), MAX_DAMAGE * chargePercentage);
-                level.playSound(null, entity.getX(), entity.getY(), entity.getZ(), FnCSounds.ANTLER_HEADDRESS_ATTACK_STRONG.get(), SoundSource.PLAYERS, 1.0f, 1.0f);
+                level.playSound(null, entity.getX(), entity.getY(), entity.getZ(), FnCSounds.ANTLER_HEADDRESS_ATTACK_STRONG.get(),
+                        SoundSource.PLAYERS, 1.0f, 1.0f);
             });
         }
         //Syncronise player movement
@@ -92,17 +92,14 @@ public class AntlerHandler {
         if (Math.abs(1 - percentage) < 0.01) {
             player.serverLevel().playSound(null, player.getX(), player.getY(), player.getZ(),
                     FnCSounds.ANTLER_HEADDRESS_FINISHED_CHARGING.get(), SoundSource.PLAYERS, 1.0f, 1.0f);
-        }
-        else if (percentage < 0.25) {
-            player.serverLevel().playSound(null, player.getX(), player.getY(), player.getZ(),
-                    FnCSounds.ANTLER_HEADDRESS_CHARGE.get(), SoundSource.PLAYERS, 1.0f, 1.0f);
-        }
-        else {
-            player.serverLevel().playSound(null, player.getX(), player.getY(), player.getZ(),
-                    FnCSounds.ANTLER_HEADDRESS_CHARGE.get(), SoundSource.PLAYERS, 4.0f, 1.0f);
+        } else if (percentage < 0.25) {
+            player.serverLevel().playSound(null, player.getX(), player.getY(), player.getZ(), FnCSounds.ANTLER_HEADDRESS_CHARGE.get(),
+                    SoundSource.PLAYERS, 1.0f, 1.0f);
+        } else {
+            player.serverLevel().playSound(null, player.getX(), player.getY(), player.getZ(), FnCSounds.ANTLER_HEADDRESS_CHARGE.get(),
+                    SoundSource.PLAYERS, 4.0f, 1.0f);
         }
     }
-
 
     private static class AntlerStorage {
         private float value;

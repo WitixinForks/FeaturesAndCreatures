@@ -16,22 +16,23 @@ public abstract class AntlerHeaddress extends ArmorItem implements GeoItem {
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    public AntlerHeaddress(ArmorMaterial material, ArmorItem.Type type, Properties itemProperties){
+    public AntlerHeaddress(ArmorMaterial material, ArmorItem.Type type, Properties itemProperties) {
         super(material, type, itemProperties);
     }
 
     //No attributes, no armor
     @Override
-    public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot equipmentSlot){
+    public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot equipmentSlot) {
         return ImmutableMultimap.of();
     }
 
     @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllers){
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
 
     }
+
     @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache(){
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return cache;
     }
 }

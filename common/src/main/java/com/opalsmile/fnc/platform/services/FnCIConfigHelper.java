@@ -19,6 +19,13 @@ public interface FnCIConfigHelper {
     // 3 * 1 in game day * to ticks
     int JOCKEY_DEFAULT_ALIVE_TIME = 3 * (20 * 60) * 20;
 
+    static List<String> defaultBlacklistedEffects() {
+        return Util.make(new ArrayList<>(), effects -> {
+            effects.add(BuiltInRegistries.MOB_EFFECT.getKey(MobEffects.CONDUIT_POWER).toString());
+            effects.add(BuiltInRegistries.MOB_EFFECT.getKey(MobEffects.DARKNESS).toString());
+        });
+    }
+
     /**
      * Jockey spawn chance. Clamped between 0 and 1. Default value is 0.5
      * @return A double representing the chance for the jockey to spawn
@@ -56,11 +63,4 @@ public interface FnCIConfigHelper {
      * @return The amount of time the game waits before attempting to spawn a jockey.
      */
     int jockeySpawningCooldown();
-
-    static List<String> defaultBlacklistedEffects() {
-        return Util.make(new ArrayList<>(), effects -> {
-            effects.add(BuiltInRegistries.MOB_EFFECT.getKey(MobEffects.CONDUIT_POWER).toString());
-            effects.add(BuiltInRegistries.MOB_EFFECT.getKey(MobEffects.DARKNESS).toString());
-        });
-    }
 }

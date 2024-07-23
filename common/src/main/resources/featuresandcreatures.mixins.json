@@ -8,9 +8,9 @@
     "MixinServerLevel"
   ],
   "client": [
-      "client.MixinRenderAntlerBar",
-      "client.MixinDowsingRod",
-      "client.spear.MixinSpearRendering"
+    "client.MixinRenderAntlerBar",
+    "client.MixinDowsingRod",
+    "client.spear.MixinSpearRendering"
   ],
   "server": [
   ],

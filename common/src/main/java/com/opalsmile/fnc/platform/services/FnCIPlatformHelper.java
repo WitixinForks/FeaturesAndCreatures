@@ -32,8 +32,11 @@ public interface FnCIPlatformHelper {
     boolean isDevelopmentEnvironment();
 
     TagKey<Biome> snowBiomes();
+
     TagKey<Biome> swampBiomes();
+
     TagKey<Biome> plainsBiomes();
+
     TagKey<Biome> mountainBiomes();
 
     Supplier<? extends AntlerHeaddress> getAntlerHeaddress();

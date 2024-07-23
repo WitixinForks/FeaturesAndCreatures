@@ -16,11 +16,12 @@ import software.bernie.geckolib.renderer.GeoEntityRenderer;
 import software.bernie.geckolib.renderer.layer.BlockAndItemGeoLayer;
 
 public class JockeyRenderer extends GeoEntityRenderer<Jockey> {
-    public JockeyRenderer(EntityRendererProvider.Context renderManager){
+    public JockeyRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new DefaultedEntityGeoModel<>(FnCConstants.resourceLocation("jockey"), true));
         addRenderLayer(new BlockAndItemGeoLayer<>(this, this::getItems, (bone, jockey) -> null) {
             @Override
-            protected void renderStackForBone(PoseStack poseStack, GeoBone bone, ItemStack stack, Jockey animatable, MultiBufferSource bufferSource, float partialTick, int packedLight, int packedOverlay){
+            protected void renderStackForBone(PoseStack poseStack, GeoBone bone, ItemStack stack, Jockey animatable,
+                                              MultiBufferSource bufferSource, float partialTick, int packedLight, int packedOverlay) {
 
                 poseStack.pushPose();
 
@@ -29,8 +30,7 @@ public class JockeyRenderer extends GeoEntityRenderer<Jockey> {
                 poseStack.mulPose(Axis.XN.rotation(1.8f));
                 poseStack.translate(-0.2f, 0.0f, -0.3f);
 
-                super.renderStackForBone(poseStack, bone, stack, animatable, bufferSource, partialTick, packedLight,
-                        packedOverlay);
+                super.renderStackForBone(poseStack, bone, stack, animatable, bufferSource, partialTick, packedLight, packedOverlay);
 
                 poseStack.popPose();
             }

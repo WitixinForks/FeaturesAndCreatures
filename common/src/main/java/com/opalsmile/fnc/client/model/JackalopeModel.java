@@ -8,15 +8,14 @@ import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 public class JackalopeModel extends DefaultedEntityGeoModel<Jackalope> {
 
     public static final ResourceLocation TEXTURE = FnCConstants.resourceLocation("textures/entity/jackalope.png");
-    public static final ResourceLocation SADDLED = FnCConstants.resourceLocation(
-            "textures/entity/jackalope_saddle.png");
+    public static final ResourceLocation SADDLED = FnCConstants.resourceLocation("textures/entity/jackalope_saddle.png");
 
-    @Override
-    public ResourceLocation getTextureResource(Jackalope jackalope){
-        return jackalope.isSaddled() ? SADDLED : TEXTURE;
+    public JackalopeModel(ResourceLocation assetSubpath, boolean turnsHead) {
+        super(assetSubpath, turnsHead);
     }
 
-    public JackalopeModel(ResourceLocation assetSubpath, boolean turnsHead){
-        super(assetSubpath, turnsHead);
+    @Override
+    public ResourceLocation getTextureResource(Jackalope jackalope) {
+        return jackalope.isSaddled() ? SADDLED : TEXTURE;
     }
 }

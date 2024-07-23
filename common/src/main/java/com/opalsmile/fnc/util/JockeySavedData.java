@@ -22,14 +22,13 @@ public class JockeySavedData extends SavedData {
 
     private String dimensionId = "";
 
-    public static JockeySavedData get(MinecraftServer server){
-        return server.overworld().getDataStorage().computeIfAbsent(
-                 JockeySavedData::load, JockeySavedData::new, FnCConstants.MOD_ID);
+    public static JockeySavedData get(MinecraftServer server) {
+        return server.overworld().getDataStorage().computeIfAbsent(JockeySavedData::load, JockeySavedData::new, FnCConstants.MOD_ID);
     }
 
-    public static JockeySavedData load(final CompoundTag tag){
+    public static JockeySavedData load(final CompoundTag tag) {
         JockeySavedData savedData = new JockeySavedData();
-        if(tag.getBoolean("jockey_spawned")) {
+        if (tag.getBoolean("jockey_spawned")) {
             savedData.jockeySpawned = true;
             savedData.jockeyUUID = tag.getUUID("jockey_uuid");
             savedData.spawnPosition = NbtUtils.readBlockPos(tag.getCompound("jockey_position"));
@@ -40,9 +39,9 @@ public class JockeySavedData extends SavedData {
     }
 
     @Override
-    public CompoundTag save(CompoundTag compoundTag){
+    public CompoundTag save(CompoundTag compoundTag) {
         compoundTag.putBoolean("jockey_spawned", this.jockeySpawned);
-        if(jockeySpawned) {
+        if (jockeySpawned) {
             compoundTag.putUUID("jockey_uuid", jockeyUUID);
             compoundTag.put("jockey_position", NbtUtils.writeBlockPos(spawnPosition));
             compoundTag.putString("jockey_dimension", dimensionId);
@@ -51,35 +50,35 @@ public class JockeySavedData extends SavedData {
         return compoundTag;
     }
 
-    public BlockPos getSpawnPosition(){
+    public BlockPos getSpawnPosition() {
         return spawnPosition;
     }
 
-    public void setSpawnPosition(BlockPos spawnPosition){
+    public void setSpawnPosition(BlockPos spawnPosition) {
         this.spawnPosition = spawnPosition;
     }
 
-    public UUID getJockeyUUID(){
+    public UUID getJockeyUUID() {
         return jockeyUUID;
     }
 
-    public void setJockeyUUID(UUID jockeyUUID){
+    public void setJockeyUUID(UUID jockeyUUID) {
         this.jockeyUUID = jockeyUUID;
     }
 
-    public boolean hasJockeySpawned(){
+    public boolean hasJockeySpawned() {
         return jockeySpawned;
     }
 
-    public void setJockeySpawned(boolean jockeySpawned){
+    public void setJockeySpawned(boolean jockeySpawned) {
         this.jockeySpawned = jockeySpawned;
     }
 
-    public long getJockeyCooldown(){
+    public long getJockeyCooldown() {
         return jockeyCooldown;
     }
 
-    public void setJockeyCooldown(long jockeyCooldown){
+    public void setJockeyCooldown(long jockeyCooldown) {
         this.jockeyCooldown = jockeyCooldown;
     }
 

@@ -5,10 +5,18 @@
   },
   "display": {
     "firstperson_righthand": {
-      "translation": [0, 0, -3.5]
+      "translation": [
+        0,
+        0,
+        -3.5
+      ]
     },
     "firstperson_lefthand": {
-      "translation": [0, 0, -3.5]
+      "translation": [
+        0,
+        0,
+        -3.5
+      ]
     }
   },
   "overrides": [

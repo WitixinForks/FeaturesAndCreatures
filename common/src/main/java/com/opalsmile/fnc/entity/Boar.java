@@ -29,22 +29,22 @@ public class Boar extends RideableNeutralMob {
         super(entityType, level);
     }
 
-    public static AttributeSupplier.Builder createAttributes(){
+    public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 11.0D).add(Attributes.MOVEMENT_SPEED, 0.2F).add(Attributes.ATTACK_DAMAGE, 8);
     }
 
     @Override
-    public TagKey<Item> getFoodTag(){
+    public TagKey<Item> getFoodTag() {
         return BOAR_FOOD;
     }
 
     @Override
-    public SoundEvent getSaddleSound(){
+    public SoundEvent getSaddleSound() {
         return FnCSounds.BOAR_SADDLE.get();
     }
 
     @Override
-    int getTimeToAttack(){
+    int getTimeToAttack() {
         return 2;
     }
 
@@ -60,16 +60,14 @@ public class Boar extends RideableNeutralMob {
     }
 
     @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar){
-        controllerRegistrar.add(new AnimationController<>(this, "controller", 0, this::predicate)
-                .triggerableAnim("attack", ATTACK));
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
+        controllerRegistrar.add(new AnimationController<>(this, "controller", 0, this::predicate).triggerableAnim("attack", ATTACK));
     }
 
-    private PlayState predicate(final AnimationState<Boar> event){
+    private PlayState predicate(final AnimationState<Boar> event) {
         if (ATTACK.equals(event.getController().getCurrentRawAnimation())) return PlayState.STOP;
         if (event.isMoving()) return event.setAndContinue(WALK);
         return PlayState.STOP;
     }
-
 
 }

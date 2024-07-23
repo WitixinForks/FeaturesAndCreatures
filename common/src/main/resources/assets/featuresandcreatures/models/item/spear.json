@@ -1,6 +1,6 @@
 {
-	"parent": "item/handheld",
-	"textures": {
-		"layer0": "featuresandcreatures:item/spear"
-	}
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "featuresandcreatures:item/spear"
+  }
 }

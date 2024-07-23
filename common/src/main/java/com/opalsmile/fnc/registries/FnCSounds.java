@@ -37,17 +37,18 @@ public class FnCSounds {
     public static Supplier<SoundEvent> SPEAR_ATTACK = FnCServices.REGISTRATION.registerSoundEvent("entity.spear.attack");
     public static Supplier<SoundEvent> SPEAR_MISS = FnCServices.REGISTRATION.registerSoundEvent("entity.spear.miss");
 
-    public static Supplier<SoundEvent> ANTLER_HEADDRESS_ATTACK_STRONG = FnCServices.REGISTRATION.registerSoundEvent(
-            "entity.antler_headdress.attack_strong");
-    public static Supplier<SoundEvent> ANTLER_HEADDRESS_CHARGE = FnCServices.REGISTRATION.registerSoundEvent("entity.antler_headdress.charge");
-    public static Supplier<SoundEvent> ANTLER_HEADDRESS_FINISHED_CHARGING = FnCServices.REGISTRATION.registerSoundEvent(
-            "entity.antler_headdress.finished_charging");
+    public static Supplier<SoundEvent> ANTLER_HEADDRESS_ATTACK_STRONG = FnCServices.REGISTRATION.registerSoundEvent("entity" +
+            ".antler_headdress.attack_strong");
+    public static Supplier<SoundEvent> ANTLER_HEADDRESS_CHARGE = FnCServices.REGISTRATION.registerSoundEvent("entity.antler_headdress" +
+            ".charge");
+    public static Supplier<SoundEvent> ANTLER_HEADDRESS_FINISHED_CHARGING = FnCServices.REGISTRATION.registerSoundEvent("entity" +
+            ".antler_headdress.finished_charging");
 
     public static Supplier<SoundEvent> ENTITY_DESADDLE = FnCServices.REGISTRATION.registerSoundEvent("entity.saddled.desaddle");
 
     public static Supplier<SoundEvent> DOWSING_ROD_LOCATES = FnCServices.REGISTRATION.registerSoundEvent("item.dowsing_rod.locates");
 
-    public static void init(){
+    public static void init() {
 
     }
 }

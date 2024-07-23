@@ -20,15 +20,16 @@ public class MixinDowsingRod {
     @Shadow
     private ItemStack offHandItem;
 
-    @Inject(method = "renderArmWithItem", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;pushPose()V"), cancellable = true)
+    @Inject(method = "renderArmWithItem", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;pushPose()V"),
+            cancellable = true)
     private void handleArmRendering(AbstractClientPlayer clientPlayer, float partialTick, float playerRotation, InteractionHand hand,
-                                           float handAttackAnim, ItemStack stack, float lerpedArmHeight, PoseStack poseStack, MultiBufferSource multiBufferSource,
-                                    int packedLight, CallbackInfo callbackInfo) {
-            if (stack.is(FnCItems.DOWSING_ROD.get())) {
-                if (hand == InteractionHand.MAIN_HAND && offHandItem.isEmpty()) {
-                    DowsingRodHandRenderer.render(poseStack, multiBufferSource, packedLight, playerRotation, lerpedArmHeight, handAttackAnim,
-                             clientPlayer);
-                }
+                                    float handAttackAnim, ItemStack stack, float lerpedArmHeight, PoseStack poseStack,
+                                    MultiBufferSource multiBufferSource, int packedLight, CallbackInfo callbackInfo) {
+        if (stack.is(FnCItems.DOWSING_ROD.get())) {
+            if (hand == InteractionHand.MAIN_HAND && offHandItem.isEmpty()) {
+                DowsingRodHandRenderer.render(poseStack, multiBufferSource, packedLight, playerRotation, lerpedArmHeight, handAttackAnim,
+                        clientPlayer);
             }
+        }
     }
 }

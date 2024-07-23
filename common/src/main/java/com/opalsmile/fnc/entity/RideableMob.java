@@ -37,7 +37,7 @@ public abstract class RideableMob extends Animal implements GeoEntity {
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    public RideableMob(EntityType<? extends Animal> entityType, Level level){
+    public RideableMob(EntityType<? extends Animal> entityType, Level level) {
         super(entityType, level);
     }
 
@@ -51,13 +51,13 @@ public abstract class RideableMob extends Animal implements GeoEntity {
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag compoundNBT){
+    public void readAdditionalSaveData(CompoundTag compoundNBT) {
         super.readAdditionalSaveData(compoundNBT);
         this.setSaddled(compoundNBT.getBoolean("Saddled"));
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag compoundNBT){
+    public void addAdditionalSaveData(CompoundTag compoundNBT) {
         super.addAdditionalSaveData(compoundNBT);
         compoundNBT.putBoolean("Saddled", this.isSaddled());
     }
@@ -68,43 +68,42 @@ public abstract class RideableMob extends Animal implements GeoEntity {
         this.entityData.define(SADDLED, false);
     }
 
-    public boolean isSaddled(){
+    public boolean isSaddled() {
         return this.entityData.get(SADDLED);
     }
 
-    public void setSaddled(boolean saddled){
+    public void setSaddled(boolean saddled) {
         this.entityData.set(SADDLED, saddled);
     }
 
     @Override
-    public InteractionResult mobInteract(Player player, InteractionHand hand){
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
         if (this.isFood(player.getItemInHand(hand)) || !this.isPlayerRideable()) {
             return super.mobInteract(player, hand);
         }
         boolean isServerSide = !player.level().isClientSide();
         if (this.isSaddled()) {
-            if(player.isSecondaryUseActive()) {
+            if (player.isSecondaryUseActive()) {
                 if (isServerSide) {
                     this.setSaddled(false);
                     this.spawnAtLocation(Items.SADDLE);
-                    player.level().playSound(null, this.getX(), this.getY() + 0.33f, this.getZ(), FnCSounds.ENTITY_DESADDLE.get(), SoundSource.NEUTRAL, 1, 1);
+                    player.level().playSound(null, this.getX(), this.getY() + 0.33f, this.getZ(), FnCSounds.ENTITY_DESADDLE.get(),
+                            SoundSource.NEUTRAL, 1, 1);
                 }
                 return InteractionResult.sidedSuccess(isServerSide);
-            }
-            else {
+            } else {
                 //Check if not occupied and ride
                 if (this.getControllingPassenger() == null) {
                     if (isServerSide) player.startRiding(this);
                     return InteractionResult.sidedSuccess(isServerSide);
                 }
             }
-        }
-        else {
-            if(player.getItemInHand(hand).is(Items.SADDLE)) {
+        } else {
+            if (player.getItemInHand(hand).is(Items.SADDLE)) {
                 if (isServerSide) {
                     player.level().playSound(null, this, this.getSaddleSound(), SoundSource.NEUTRAL, 1, 1);
                     this.setSaddled(true);
-                    if(!player.getAbilities().instabuild) {
+                    if (!player.getAbilities().instabuild) {
                         player.getItemInHand(hand).shrink(1);
                     }
                 }
@@ -114,10 +113,9 @@ public abstract class RideableMob extends Animal implements GeoEntity {
         return super.mobInteract(player, hand);
     }
 
-
     @Nullable
     @Override
-    public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob entity){
+    public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob entity) {
         return (AgeableMob) this.getType().create(level);
     }
 
@@ -127,18 +125,18 @@ public abstract class RideableMob extends Animal implements GeoEntity {
     }
 
     @Override
-    protected void dropEquipment(){
-        if(this.isSaddled()) this.spawnAtLocation(Items.SADDLE);
+    protected void dropEquipment() {
+        if (this.isSaddled()) this.spawnAtLocation(Items.SADDLE);
     }
 
     @Override
-    protected void tickRidden(Player player, Vec3 movement){
+    protected void tickRidden(Player player, Vec3 movement) {
         this.setRot(player.getYRot(), player.getXRot() * 0.5F);
         this.yRotO = this.yBodyRot = this.yHeadRot = this.getYRot();
     }
 
     @Override
-    protected Vec3 getRiddenInput(Player player, Vec3 input){
+    protected Vec3 getRiddenInput(Player player, Vec3 input) {
         float horizontal = player.xxa * 0.5F;
         float forwards = player.zza;
         if (forwards <= 0.0F) {
@@ -150,7 +148,7 @@ public abstract class RideableMob extends Animal implements GeoEntity {
     }
 
     @Override
-    protected float getRiddenSpeed(Player player){
+    protected float getRiddenSpeed(Player player) {
         return (float) this.getAttributeValue(Attributes.MOVEMENT_SPEED);
     }
 
@@ -173,7 +171,7 @@ public abstract class RideableMob extends Animal implements GeoEntity {
     abstract boolean isPlayerRideable();
 
     @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache(){
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return cache;
     }
 }

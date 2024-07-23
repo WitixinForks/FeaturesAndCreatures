@@ -10,12 +10,12 @@ public class SabertoothModel extends DefaultedEntityGeoModel<Sabertooth> {
 
     private static final ResourceLocation SADDLED = FnCConstants.resourceLocation("textures/entity/sabertooth_saddled.png");
 
-    public SabertoothModel(ResourceLocation assetSubpath, boolean turnsHead){
+    public SabertoothModel(ResourceLocation assetSubpath, boolean turnsHead) {
         super(assetSubpath, turnsHead);
     }
 
     @Override
-    public ResourceLocation getTextureResource(Sabertooth sabertooth){
+    public ResourceLocation getTextureResource(Sabertooth sabertooth) {
         return sabertooth.getControllingPassenger() instanceof Jockey ? SADDLED : super.getTextureResource(sabertooth);
     }
 }

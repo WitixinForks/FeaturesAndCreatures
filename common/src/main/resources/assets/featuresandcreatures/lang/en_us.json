@@ -13,7 +13,6 @@
   "entity.featuresandcreatures.shulkren_youngling": "Shulkren Youngling",
   "entity.featuresandcreatures.spear": "Spear",
   "entity.featuresandcreatures.tbh": "tbh",
-
   "creativetab.featuresandcreatures": "Features & Creatures",
   "item.featuresandcreatures.black_forest_spirit_spawn_egg": "Black Forest Spirit Spawn Egg",
   "item.featuresandcreatures.boar_spawn_egg": "Boar Spawn Egg",
@@ -54,7 +53,6 @@
   "block.featuresandcreatures.stone_sunset_ore": "Stone Sunset Ore",
   "block.featuresandcreatures.sunset_ore": "Sunset Ore",
   "block.featuresandcreatures.deepslate_sunset_ore": "Deepslate Sunset Ore",
-
   "subtitles.entity.featuresandcreatures.desaddle": "Entity Desaddles",
   "subtitles.entity.antler_headdress.hits": "Player charges",
   "subtitles.entity.boar.hurts": "Boar hurts",
@@ -86,12 +84,9 @@
   "subtitles.entity.antler_headdress.charging": "Player charges",
   "subtitles.entity.antler_headdress.finished_charging": "Player finishes charging",
   "subtitles.entity.antler_headdress.hit_strong": "Player charges forward",
-
   "advancementRoot.description": "A world of creatures big and small.",
   "advancements.adventure.throw_trident.description": "Throw a throwable weapon at something.\nNote: Throwing away your only weapon is not a good idea.",
-
-  "key.featuresandcreatures.antler_headdress" : "Antler Headdress Charge",
-
+  "key.featuresandcreatures.antler_headdress": "Antler Headdress Charge",
   "bestiary.featuresandcreatures.toast": "New page unlocked!",
   "bestiary.featuresandcreatures.right": "Next Page",
   "bestiary.featuresandcreatures.left": "Previous Page",
@@ -125,11 +120,10 @@
   "bestiary.featuresandcreatures.shulkren_youngling.spawn.byg": "The End, especially Shulkren Forests",
   "bestiary.featuresandcreatures.tbh.description": "I… don’t know what to say about this one. I observe them from a distance, watching them frolick throughout the flowers. They don’t do anything else.\n\nI ventured too close, once. Looked it right in those vacant eyes. This thing has knowledge no creature should have.",
   "bestiary.featuresandcreatures.tbh.spawn": "Flower Forest, Meadows, Plains, and Sunflower Plains at daytime.",
-
-  "featuresandcreatures.midnightconfig.title" : "Features and Creatures Config",
-  "featuresandcreatures.midnightconfig.jockeySpawnChance" : "The chance, in a 0-1 range, for a jockey to spawn",
+  "featuresandcreatures.midnightconfig.title": "Features and Creatures Config",
+  "featuresandcreatures.midnightconfig.jockeySpawnChance": "The chance, in a 0-1 range, for a jockey to spawn",
   "featuresandcreatures.midnightconfig.namedJockeyDespawn": "Whether named jockeys should still despawn",
-  "featuresandcreatures.midnightconfig.jockeyEffectBlacklist" : "The list of effects, in resourcelocation form (minecraft:regeneration) that cannot be sold by the jockey",
+  "featuresandcreatures.midnightconfig.jockeyEffectBlacklist": "The list of effects, in resourcelocation form (minecraft:regeneration) that cannot be sold by the jockey",
   "featuresandcreatures.midnightconfig.jockeyDespawnTime": "The time the jockey is alive for",
-  "featuresandcreatures.midnightconfig.jockeyCooldownTime" : "The time the game waits before attempting to spawn a new jockey"
+  "featuresandcreatures.midnightconfig.jockeyCooldownTime": "The time the game waits before attempting to spawn a new jockey"
 }
