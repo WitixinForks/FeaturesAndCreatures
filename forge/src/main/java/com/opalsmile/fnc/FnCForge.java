@@ -9,7 +9,6 @@ import com.opalsmile.fnc.entity.goals.SabertoothFearEventListener;
 import com.opalsmile.fnc.item.*;
 import com.opalsmile.fnc.platform.FnCForgeConfigHelper;
 import com.opalsmile.fnc.platform.FnCForgeNetworkHelper;
-import com.opalsmile.fnc.platform.FnCServices;
 import com.opalsmile.fnc.registries.FnCEntities;
 import com.opalsmile.fnc.registries.FnCRegistry;
 import com.opalsmile.fnc.registries.FnCTriggers;

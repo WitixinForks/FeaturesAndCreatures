@@ -1,8 +1,6 @@
 package com.opalsmile.fnc.registries;
 
-import com.opalsmile.fnc.FnCConstants;
 import com.opalsmile.fnc.platform.FnCServices;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;

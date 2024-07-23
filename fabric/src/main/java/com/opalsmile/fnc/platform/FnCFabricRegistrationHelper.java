@@ -4,7 +4,6 @@ import com.opalsmile.fnc.FnCConstants;
 import com.opalsmile.fnc.platform.services.FnCIRegistrationHelper;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
