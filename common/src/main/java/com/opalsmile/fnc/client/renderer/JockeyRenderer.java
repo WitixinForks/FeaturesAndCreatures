@@ -17,7 +17,7 @@ import software.bernie.geckolib.renderer.layer.BlockAndItemGeoLayer;
 
 public class JockeyRenderer extends GeoEntityRenderer<Jockey> {
     public JockeyRenderer(EntityRendererProvider.Context renderManager) {
-        super(renderManager, new DefaultedEntityGeoModel<>(FnCConstants.resourceLocation("jockey"), true));
+        super(renderManager, new DefaultedEntityGeoModel<>(FnCConstants.resourceLocation("jockey"), false));
         addRenderLayer(new BlockAndItemGeoLayer<>(this, this::getItems, (bone, jockey) -> null) {
             @Override
             protected void renderStackForBone(PoseStack poseStack, GeoBone bone, ItemStack stack, Jockey animatable,
