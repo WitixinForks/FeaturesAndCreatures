@@ -65,7 +65,7 @@ public class Boar extends RideableNeutralMob {
     }
 
     private PlayState predicate(final AnimationState<Boar> event) {
-        if (ATTACK.equals(event.getController().getCurrentRawAnimation())) return PlayState.STOP;
+        if (ATTACK.equals(event.getController().getCurrentRawAnimation()) && isAngry()) return PlayState.STOP;
         if (event.isMoving()) return event.setAndContinue(WALK);
         return PlayState.STOP;
     }
