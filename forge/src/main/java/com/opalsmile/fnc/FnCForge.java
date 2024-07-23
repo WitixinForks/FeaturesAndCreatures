@@ -9,17 +9,22 @@ import com.opalsmile.fnc.entity.goals.SabertoothFearEventListener;
 import com.opalsmile.fnc.item.*;
 import com.opalsmile.fnc.platform.FnCForgeConfigHelper;
 import com.opalsmile.fnc.platform.FnCForgeNetworkHelper;
+import com.opalsmile.fnc.platform.FnCServices;
 import com.opalsmile.fnc.registries.FnCEntities;
 import com.opalsmile.fnc.registries.FnCRegistry;
 import com.opalsmile.fnc.registries.FnCTriggers;
 import com.opalsmile.fnc.util.FnCEventHandler;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -41,14 +46,21 @@ import java.util.function.Supplier;
 @Mod(FnCConstants.MOD_ID)
 public class FnCForge {
 
-    private static final DeferredRegister<Item> ITEM_REGISTRY = DeferredRegister.create(ForgeRegistries.ITEMS, FnCConstants.MOD_ID);
-    public static final RegistryObject<? extends AntlerHeaddress> ANTLER_HEADDRESS = ITEM_REGISTRY.register("antler_headdress", () ->
+    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, FnCConstants.MOD_ID);
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, FnCConstants.MOD_ID);
+    public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, FnCConstants.MOD_ID);
+    public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES,
+            FnCConstants.MOD_ID);
+    public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS,
+            FnCConstants.MOD_ID);
+
+    public static final RegistryObject<? extends AntlerHeaddress> ANTLER_HEADDRESS = ITEMS.register("antler_headdress", () ->
             new ForgeAntlerHeaddress(new AntlerMaterial("antler"), ArmorItem.Type.HELMET, new Item.Properties()));
 
-    public static final RegistryObject<? extends SpearItem> SPEAR = ITEM_REGISTRY.register("spear", () ->
+    public static final RegistryObject<? extends SpearItem> SPEAR = ITEMS.register("spear", () ->
             new ForgeSpearItem(new Item.Properties().stacksTo(1).durability(200)));
 
-
+    //TODO FIX
     public static final RegistryObject<SpawnEggItem> JOCKEY_SPAWN_EGG =
             createSpawnEgg("jockey", FnCEntities.JOCKEY::get, 0xDBA5FF, 0x493835);
 
@@ -63,8 +75,13 @@ public class FnCForge {
 
     public FnCForge(){
         final IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
-        ITEM_REGISTRY.register(modBus);
         FnCRegistry.initialise();
+
+        BLOCKS.register(modBus);
+        ITEMS.register(modBus);
+        TABS.register(modBus);
+        ENTITIES.register(modBus);
+        SOUNDS.register(modBus);
 
         FnCForgeNetworkHelper.register();
 
@@ -87,7 +104,8 @@ public class FnCForge {
     }
 
     private static RegistryObject<SpawnEggItem> createSpawnEgg(String name, Supplier<EntityType<? extends Mob>> type, int backgroundColour, int highlightColour) {
-        return ITEM_REGISTRY.register(name + "_spawn_egg", () -> new ForgeSpawnEggItem(type, backgroundColour, highlightColour, new Item.Properties()));
+        return ITEMS.register(name + "_spawn_egg", () -> new ForgeSpawnEggItem(type, backgroundColour, highlightColour,
+                new Item.Properties()));
     }
 
 

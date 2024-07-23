@@ -4,6 +4,7 @@ import com.opalsmile.fnc.FnCConstants;
 import com.opalsmile.fnc.platform.services.FnCIConfigHelper;
 import com.opalsmile.fnc.platform.services.FnCINetworkHelper;
 import com.opalsmile.fnc.platform.services.FnCIPlatformHelper;
+import com.opalsmile.fnc.platform.services.FnCIRegistrationHelper;
 
 import java.util.ServiceLoader;
 
@@ -11,8 +12,8 @@ public class FnCServices {
 
     public static final FnCIPlatformHelper PLATFORM = load(FnCIPlatformHelper.class);
     public static final FnCIConfigHelper CONFIG = load(FnCIConfigHelper.class);
-
     public static final FnCINetworkHelper NETWORK = load(FnCINetworkHelper.class);
+    public static final FnCIRegistrationHelper REGISTRATION = load(FnCIRegistrationHelper.class);
 
     public static <T> T load(Class<T> clazz){
 

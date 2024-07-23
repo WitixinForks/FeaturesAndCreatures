@@ -4,79 +4,73 @@ import com.opalsmile.fnc.FnCConstants;
 import com.opalsmile.fnc.item.SpearItem;
 import com.opalsmile.fnc.platform.FnCServices;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import opalsmile.fnc.reg.RegistrationProvider;
-import opalsmile.fnc.reg.RegistryObject;
 
 import java.util.function.Supplier;
 
 public class FnCItems {
 
-    public static final RegistrationProvider<Item> REGISTER = RegistrationProvider.get(Registries.ITEM,
-            FnCConstants.MOD_ID);
+    public static final Supplier<Item> ANTLER = FnCServices.REGISTRATION.registerItem("antler", FnCItems::createItem);
+    public static final Supplier<Item> SABERTOOTH_FANG = FnCServices.REGISTRATION.registerItem("sabertooth_fang", FnCItems::createItem);
 
-    public static final RegistrationProvider<CreativeModeTab> TAB_REGISTER = RegistrationProvider.get(Registries.CREATIVE_MODE_TAB, FnCConstants.MOD_ID);
-
-    public static final RegistryObject<Item> ANTLER = REGISTER.register("antler", createItem());
-    public static final RegistryObject<Item> SABERTOOTH_FANG = REGISTER.register("sabertooth_fang", createItem());
-
-    // Armor, Weapons, and Tools
+    // Armor, Weapons, and Tools //TODO FIX
     public static final Supplier<? extends ArmorItem> ANTLER_HEADDRESS = FnCServices.PLATFORM.getAntlerHeaddress();
-//    public static final RegistryObject<? extends ArmorItem> LUNAR_HEADDRESS = REGISTER.register("lunar_headdress", () -> PlatformItemHandler.INSTANCE.getLunarHeaddressItem(FnCArmorMaterial.LUNAR, EquipmentSlot.HEAD, createProperties()));
-
     public static final Supplier<? extends SpearItem> SPEAR = FnCServices.PLATFORM.getSpear();
-    public static final RegistryObject<Item> THROWAWAY_JOKE = REGISTER.register("throwaway", () -> new Item(new Item.Properties()));
+    //public static final Supplier<? extends ArmorItem> LUNAR_HEADDRESS = REGISTER.register("lunar_headdress", () -> PlatformItemHandler.INSTANCE.getLunarHeaddressItem(FnCArmorMaterial.LUNAR, EquipmentSlot.HEAD, createProperties()));
+
+
+    public static final Supplier<Item> THROWAWAY_JOKE = FnCServices.REGISTRATION.registerItem("throwaway", () -> new Item(new Item.Properties()));
+    public static final Supplier<Item> DOWSING_ROD = FnCServices.REGISTRATION.registerItem("dowsing_rod", () -> new Item(new Item.Properties().stacksTo(1)));
     //dawn spear goes here
-    public static final RegistryObject<Item> DOWSING_ROD = REGISTER.register("dowsing_rod", () -> new Item(new Item.Properties().stacksTo(1)));
     //dawn dowser goes here
     //sunset dowser goes here
     //midnight dowser goes here
 
-    //    // Blocks
-//    public static final RegistryObject<Item> DAWN_ORE = REGISTER.register("dawn_ore", createBlockItem(FeaturesCreaturesBlocks.DAWN_ORE));
-//    public static final RegistryObject<Item> STONE_DAWN_ORE = REGISTER.register("stone_dawn_ore", createBlockItem(FeaturesCreaturesBlocks.STONE_DAWN_ORE));
-//    public static final RegistryObject<Item> DEEPSLATE_DAWN_ORE = REGISTER.register("deepslate_dawn_ore", createBlockItem(FeaturesCreaturesBlocks.DEEPSLATE_DAWN_ORE));
-    public static final RegistryObject<Item> DAWN_BLOCK = REGISTER.register("dawn_block",
-            createBlockItem(FnCBlocks.DAWN_BLOCK));
-    //    public static final RegistryObject<Item> SUNSET_ORE = REGISTER.register("sunset_ore", createBlockItem(FeaturesCreaturesBlocks.SUNSET_ORE));
-//    public static final RegistryObject<Item> STONE_SUNSET_ORE = REGISTER.register("stone_sunset_ore", createBlockItem(FeaturesCreaturesBlocks.STONE_SUNSET_ORE));
-//    public static final RegistryObject<Item> DEEPSLATE_SUNSET_ORE = REGISTER.register("deepslate_sunset_ore", createBlockItem(FeaturesCreaturesBlocks.DEEPSLATE_SUNSET_ORE));
-    public static final RegistryObject<Item> SUNSET_BLOCK = REGISTER.register("sunset_block",
-            createBlockItem(FnCBlocks.SUNSET_BLOCK));
-    //    public static final RegistryObject<Item> MIDNIGHT_ORE = REGISTER.register("midnight_ore", createBlockItem(FeaturesCreaturesBlocks.MIDNIGHT_ORE));
-//    public static final RegistryObject<Item> STONE_MIDNIGHT_ORE = REGISTER.register("stone_midnight_ore", createBlockItem(FeaturesCreaturesBlocks.STONE_MIDNIGHT_ORE));
-//    public static final RegistryObject<Item> DEEPSLATE_MIDNIGHT_ORE = REGISTER.register("deepslate_midnight_ore", createBlockItem(FeaturesCreaturesBlocks.DEEPSLATE_MIDNIGHT_ORE));
-    public static final RegistryObject<Item> MIDNIGHT_BLOCK = REGISTER.register("midnight_block",
-            createBlockItem(FnCBlocks.MIDNIGHT_BLOCK));
+    //Blocks
+    public static final Supplier<Item> DAWN_BLOCK = FnCServices.REGISTRATION.registerItem("dawn_block",
+            () -> createBlockItem(FnCBlocks.DAWN_BLOCK));
+    public static final Supplier<Item> SUNSET_BLOCK = FnCServices.REGISTRATION.registerItem("sunset_block",
+            () -> createBlockItem(FnCBlocks.SUNSET_BLOCK));
+    public static final Supplier<Item> MIDNIGHT_BLOCK = FnCServices.REGISTRATION.registerItem("midnight_block",
+            () -> createBlockItem(FnCBlocks.MIDNIGHT_BLOCK));
+    //public static final Supplier<Item> SUNSET_ORE = REGISTER.register("sunset_ore", createBlockItem(FeaturesCreaturesBlocks.SUNSET_ORE));
+    //public static final Supplier<Item> STONE_SUNSET_ORE = REGISTER.register("stone_sunset_ore", createBlockItem(FeaturesCreaturesBlocks.STONE_SUNSET_ORE));
+    //public static final Supplier<Item> DEEPSLATE_SUNSET_ORE = REGISTER.register("deepslate_sunset_ore", createBlockItem(FeaturesCreaturesBlocks.DEEPSLATE_SUNSET_ORE));
+    //public static final Supplier<Item> MIDNIGHT_ORE = REGISTER.register("midnight_ore", createBlockItem(FeaturesCreaturesBlocks.MIDNIGHT_ORE));
+    //public static final Supplier<Item> STONE_MIDNIGHT_ORE = REGISTER.register("stone_midnight_ore", createBlockItem(FeaturesCreaturesBlocks.STONE_MIDNIGHT_ORE));
+    //public static final Supplier<Item> DEEPSLATE_MIDNIGHT_ORE = REGISTER.register("deepslate_midnight_ore", createBlockItem(FeaturesCreaturesBlocks.DEEPSLATE_MIDNIGHT_ORE));
+
+    //public static final Supplier<Item> DAWN_ORE = REGISTER.register("dawn_ore", createBlockItem(FeaturesCreaturesBlocks.DAWN_ORE));
+    //public static final Supplier<Item> STONE_DAWN_ORE = REGISTER.register("stone_dawn_ore", createBlockItem(FeaturesCreaturesBlocks.STONE_DAWN_ORE));
+    //public static final Supplier<Item> DEEPSLATE_DAWN_ORE = REGISTER.register("deepslate_dawn_ore", createBlockItem(FeaturesCreaturesBlocks.DEEPSLATE_DAWN_ORE));
 
     // Misc.
-    public static final RegistryObject<Item> DAWN_CRYSTAL = REGISTER.register("dawn_crystal", createItem());
-    public static final RegistryObject<Item> SUNSET_CRYSTAL = REGISTER.register("sunset_crystal", createItem());
-    public static final RegistryObject<Item> MIDNIGHT_CRYSTAL = REGISTER.register("midnight_crystal", createItem());
+    public static final Supplier<Item> DAWN_CRYSTAL = FnCServices.REGISTRATION.registerItem("dawn_crystal", FnCItems::createItem);
+    public static final Supplier<Item> SUNSET_CRYSTAL = FnCServices.REGISTRATION.registerItem("sunset_crystal", FnCItems::createItem);
+    public static final Supplier<Item> MIDNIGHT_CRYSTAL = FnCServices.REGISTRATION.registerItem("midnight_crystal", FnCItems::createItem);
     //tinted potion goes here
 
     // Hidden
-    public static final RegistryObject<Item> MEGA_POTION = REGISTER.register("mega_potion",
+    public static final Supplier<Item> MEGA_POTION = FnCServices.REGISTRATION.registerItem("mega_potion",
             () -> new Item(new Item.Properties()));
-    //public static final RegistryObject<Item> BFS_ATTACK_ITEM = REGISTER.register("bfs_attack_item",
+    //public static final Supplier<Item> BFS_ATTACK_ITEM = FnCServices.REGISTRATION.registerItem("bfs_attack_item",
             //() -> new Item(new Item.Properties()));
 
 
-    private static Supplier<Item> createItem(){
-        return () -> new Item(new Item.Properties());
+    private static Item createItem(){
+        return new Item(new Item.Properties());
     }
 
-    private static Supplier<Item> createBlockItem(RegistryObject<Block> object){
-        return () -> new BlockItem(object.get(), new Item.Properties());
+    private static Item createBlockItem(Supplier<Block> block){
+        return new BlockItem(block.get(), new Item.Properties());
     }
 
-    public static final RegistryObject<CreativeModeTab> TAB = TAB_REGISTER.register("creative_tab", () ->
+    public static final Supplier<CreativeModeTab> TAB = FnCServices.REGISTRATION.registerCreativeModeTab("creative_tab", () ->
             CreativeModeTab
                     .builder(null, -1)
                     .icon(() -> MEGA_POTION.get().getDefaultInstance())
