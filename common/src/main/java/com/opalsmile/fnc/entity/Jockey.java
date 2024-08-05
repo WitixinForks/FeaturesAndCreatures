@@ -432,6 +432,12 @@ public class Jockey extends PathfinderMob implements Npc, Merchant, GeoEntity, R
         }
     }
 
+    @Override
+    public double getMyRidingOffset() {
+        Entity entity = this.getVehicle();
+        return -0.05;
+    }
+
     public void removeJockey() {
         final JockeySavedData savedData = JockeySavedData.get(this.getServer());
         final UUID jockeyUUID = savedData.getJockeyUUID();
