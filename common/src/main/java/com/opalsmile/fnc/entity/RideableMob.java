@@ -84,7 +84,7 @@ public abstract class RideableMob extends Animal implements GeoEntity {
         boolean isServerSide = !player.level().isClientSide();
         if (this.isSaddled()) {
             if (player.isSecondaryUseActive()) {
-                if (isServerSide) {
+                if (isServerSide && this.getPassengers().isEmpty()) {
                     this.setSaddled(false);
                     this.spawnAtLocation(Items.SADDLE);
                     player.level().playSound(null, this.getX(), this.getY() + 0.33f, this.getZ(), FnCSounds.ENTITY_DESADDLE.get(),
